@@ -68,8 +68,10 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
                     String sortOrder = Utility.getPreferedSortOrder(getActivity());
+
+                    System.out.println("CURSOR ID: "+cursor.getString(Utility.COL_MOVIE_MOVIEID));
                     ((Callback) getActivity())
-                            .onItemSelected(MovieContract.MovieEntry.buildMovieByPosterID(cursor.getString(Utility.COL_MOVIE_POSTER_PATH))
+                            .onItemSelected(MovieContract.MovieEntry.buildMovieByMovieId(cursor.getString(Utility.COL_MOVIE_MOVIEID))
                             );
                 }
                 mCurrentPos = position;

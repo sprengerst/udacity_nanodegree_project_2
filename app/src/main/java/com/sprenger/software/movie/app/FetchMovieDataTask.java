@@ -122,7 +122,6 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
 
         Vector<ContentValues> cVVector = new Vector<>(movieArray.length());
 
-
         for (int i = 0; i < movieArray.length(); i++) {
 
             JSONObject singleMovieJSON = movieArray.getJSONObject(i);

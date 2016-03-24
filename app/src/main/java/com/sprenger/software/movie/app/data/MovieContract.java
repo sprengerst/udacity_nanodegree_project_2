@@ -38,8 +38,9 @@ public class MovieContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildMovieByPosterID(String posterId) {
-            return CONTENT_URI.buildUpon().appendPath(posterId).build();
+
+        public static Uri buildMovieByMovieId(String movieId) {
+            return CONTENT_URI.buildUpon().appendPath(movieId).build();
         }
 
         public static long normalizeDate(long startDate) {

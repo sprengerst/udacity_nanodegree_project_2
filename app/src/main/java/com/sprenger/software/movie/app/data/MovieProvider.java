@@ -31,7 +31,7 @@ public class MovieProvider extends ContentProvider {
     private MoviesDbHelper mOpenHelper;
 
     static final int MOVIE = 100;
-    static final int MOVIE_WITH_POSTERPATH = 101;
+    static final int MOVIE_WITH_MOVIEID = 101;
 
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
@@ -75,7 +75,7 @@ public class MovieProvider extends ContentProvider {
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/*", MOVIE_WITH_POSTERPATH);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/*", MOVIE_WITH_MOVIEID);
 
         return matcher;
     }
@@ -99,7 +99,7 @@ public class MovieProvider extends ContentProvider {
         switch (match) {
             case MOVIE:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
-            case MOVIE_WITH_POSTERPATH:
+            case MOVIE_WITH_MOVIEID:
                 return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -124,8 +124,8 @@ public class MovieProvider extends ContentProvider {
                 break;
             }
 
-            case MOVIE_WITH_POSTERPATH: {
-                retCursor = getMovieByPosterpath(uri, projection);
+            case MOVIE_WITH_MOVIEID: {
+                retCursor = getMovieByMovieID(uri, projection);
                 break;
             }
 
@@ -139,16 +139,16 @@ public class MovieProvider extends ContentProvider {
     }
 
 
-    private static final String sPosterpathSelection =
+    private static final String sMovieIDSelection =
             MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_POSTER_PATH + " = ? ";
+                    "." + MovieContract.MovieEntry.COLUMN_ID + " = ? ";
 
-    private Cursor getMovieByPosterpath(
+    private Cursor getMovieByMovieID(
             Uri uri, String[] projection) {
 
         return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
-                sPosterpathSelection,
+                sMovieIDSelection,
                 new String[]{uri.getPathSegments().get(1)},
                 null,
                 null,
