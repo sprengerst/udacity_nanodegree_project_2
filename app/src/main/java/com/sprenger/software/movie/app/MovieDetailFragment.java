@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -41,7 +40,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mMovieRatingView;
 
     private TrailerGridAdapter trailerGridAdapter;
-    private ListView mMovieReviewList;
+    private RecyclerView mMovieReviewRecycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +60,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         mMovieDurationView = (TextView) rootView.findViewById(R.id.detail_duration_textview);
         movieRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_trailers);
         mMovieRatingView = (TextView) rootView.findViewById(R.id.detail_rating_textview);
-        mMovieReviewList = (ListView) rootView.findViewById(R.id.listview_reviews);
+        mMovieReviewRecycler = (RecyclerView) rootView.findViewById(R.id.recyclerview_reviews);
         return rootView;
     }
 
@@ -162,7 +161,13 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                 e.printStackTrace();
             }
 
-            mMovieReviewList.setAdapter(new ReviewListAdapter(getActivity(), reviewSpecs));
+            mMovieReviewRecycler.setAdapter(new ReviewListAdapter(getActivity(), reviewSpecs));
+
+            LinearLayoutManager verticalManager
+                    = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
+            mMovieReviewRecycler.setLayoutManager(verticalManager);
+            mMovieReviewRecycler.setHasFixedSize(true);
 
         }
     }
