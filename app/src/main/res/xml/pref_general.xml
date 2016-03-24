@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Created by Stefan Sprenger
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListPreference
+        android:key="@string/pref_sortorder_key"
+        android:title="Sort Order"
+        android:dialogTitle="Chose sort-order"
+        android:entries="@array/pref_sortorder_valuestore"
+        android:entryValues="@array/pref_sortorder_keystore"
+        android:defaultValue="most_popular"
+    />
+
+</PreferenceScreen>

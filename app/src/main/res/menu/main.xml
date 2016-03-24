@@ -1,0 +1,15 @@
+<!--
+  ~ Created by Stefan Sprenger
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainDiscoveryActivity">
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/title_activity_setting"
+        app:showAsAction="never" />
+</menu>

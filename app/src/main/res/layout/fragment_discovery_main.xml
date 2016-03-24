@@ -1,0 +1,19 @@
+
+<!--
+  ~ Created by Stefan Sprenger
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gridview_movie_images"
+        android:columnWidth="80pt"
+        android:stretchMode="columnWidth"
+        android:numColumns="auto_fit"/>
+
+</FrameLayout>
