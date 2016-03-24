@@ -2,99 +2,95 @@
   ~ Created by Stefan Sprenger
   -->
 
-<!-- Master layout. -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title_text_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#029789"
+        android:gravity="center"
+        android:padding="18dip"
+        android:text="Titel"
+        android:textColor="#ffffff"
+        android:textSize="25sp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1.88"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/title_text_detail"
-            android:layout_width="fill_parent"
+        <ImageView
+            android:id="@+id/image_view_detail"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#029789"
+            android:layout_weight="1"
+            android:contentDescription="Movieimage"
             android:gravity="center"
-            android:padding="18dip"
-            android:text="Titel"
-            android:textColor="#ffffff"
-            android:textSize="25sp" />
+            android:padding="20dip"
+            android:textColor="#000000" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1.88"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/image_view_detail"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/detail_release_date_textview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Movieimage"
-                android:gravity="center"
-                android:padding="20dip"
-                android:textColor="#000000" />
+                android:text="2015" />
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/detail_duration_textview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:text="120min" />
 
-                <TextView
-                    android:id="@+id/detail_release_date_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2015" />
-
-                <TextView
-                    android:id="@+id/detail_duration_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="120min" />
-
-                <TextView
-                    android:id="@+id/detail_rating_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="9.1/10" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/detail_rating_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9.1/10" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/synopsis_text_detail"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:paddingLeft="6pt"
-            android:paddingRight="6pt"
-            android:paddingTop="5pt"
-            android:scrollbars="vertical"
-            android:text="blabdfkbs lfbsakld bfklabsd kbflkasdb fsd sf asdf ads fasd   asdf asdf ads fasd fasd fasd fads f"
-            android:textColor="#737373"
-            android:textSize="18sp" />
-
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/gridview_trailers"
-            android:columnWidth="80pt"
-            android:stretchMode="columnWidth"
-            android:numColumns="auto_fit"/>
-
-        <ListView
-            android:id="@+id/listview_reviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
     </LinearLayout>
-</ScrollView>
+
+    <TextView
+        android:id="@+id/synopsis_text_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:paddingLeft="6pt"
+        android:paddingRight="6pt"
+        android:paddingTop="5pt"
+        android:scrollbars="vertical"
+        android:text="blabdfkbs lfbsakld bfklabsd kbflkasdb fsd sf asdf ads fasd   asdf asdf ads fasd fasd fasd fads f"
+        android:textColor="#737373"
+        android:textSize="18sp" />
+
+    <view
+        android:id="@+id/recyclerview_trailers"
+        class="android.support.v7.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+
+
+    <ListView
+        android:id="@+id/listview_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

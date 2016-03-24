@@ -11,12 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +37,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mMovieTitleView;
     private TextView mMovieReleaseDateView;
     private TextView mMovieDurationView;
-    private GridView movieTrailerGrid;
+    private RecyclerView movieRecyclerView;
     private TextView mMovieRatingView;
 
     private TrailerGridAdapter trailerGridAdapter;
@@ -59,7 +59,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         mMovieTitleView = (TextView) rootView.findViewById(R.id.title_text_detail);
         mMovieReleaseDateView = (TextView) rootView.findViewById(R.id.detail_release_date_textview);
         mMovieDurationView = (TextView) rootView.findViewById(R.id.detail_duration_textview);
-        movieTrailerGrid = (GridView) rootView.findViewById(R.id.gridview_trailers);
+        movieRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_trailers);
         mMovieRatingView = (TextView) rootView.findViewById(R.id.detail_rating_textview);
         mMovieReviewList = (ListView) rootView.findViewById(R.id.listview_reviews);
         return rootView;
@@ -144,16 +144,12 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                 trailerGridAdapter = new TrailerGridAdapter(getActivity(), trailerNameIncremental, new ArrayList<String>());
             }
 
-            movieTrailerGrid.setAdapter(trailerGridAdapter);
+            movieRecyclerView.setAdapter(trailerGridAdapter);
+            LinearLayoutManager horizontalManager
+                    = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-            movieTrailerGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Utility.watchYoutubeVideo(trailerGridAdapter.getItem(position), getContext());
-                }
-            });
-
-
+            movieRecyclerView.setLayoutManager(horizontalManager);
+            movieRecyclerView.setHasFixedSize(true);
 
             ArrayList<ReviewSpec> reviewSpecs = new ArrayList<>();
             FetchReviewDataTask fetchReviewDataTask = new FetchReviewDataTask(getContext());
