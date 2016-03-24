@@ -5,13 +5,14 @@
 package com.sprenger.software.movie.app;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainDiscoveryActivity extends AppCompatActivity {
+public class MainDiscoveryActivity extends AppCompatActivity implements MainDiscoveryFragment.Callback {
 
     private String mSortOrder;
 
@@ -69,5 +70,27 @@ public class MainDiscoveryActivity extends AppCompatActivity {
 //            }
             mSortOrder = sortOrder;
         }
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+//        if (mTwoPane) {
+//            // In two-pane mode, show the detail view in this activity by
+//            // adding or replacing the detail fragment using a
+//            // fragment transaction.
+//            Bundle args = new Bundle();
+//            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
+//
+//            DetailFragment fragment = new DetailFragment();
+//            fragment.setArguments(args);
+//
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+//                    .commit();
+//        } else {
+            Intent intent = new Intent(this, MovieDetailActivity.class)
+                    .setData(dateUri);
+            startActivity(intent);
+//        }
     }
 }

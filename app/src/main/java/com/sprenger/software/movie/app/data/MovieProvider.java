@@ -31,6 +31,8 @@ public class MovieProvider extends ContentProvider {
     private MoviesDbHelper mOpenHelper;
 
     static final int MOVIE = 100;
+    static final int MOVIE_WITH_POSTERPATH = 101;
+
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
 
@@ -68,12 +70,12 @@ public class MovieProvider extends ContentProvider {
 //    }
 
 
-
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE + "/*", MOVIE_WITH_POSTERPATH);
 
         return matcher;
     }
@@ -97,6 +99,8 @@ public class MovieProvider extends ContentProvider {
         switch (match) {
             case MOVIE:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
+            case MOVIE_WITH_POSTERPATH:
+                return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -120,11 +124,36 @@ public class MovieProvider extends ContentProvider {
                 break;
             }
 
-            default:
+            case MOVIE_WITH_POSTERPATH: {
+                retCursor = getMovieByPosterpath(uri, projection);
+                break;
+            }
+
+            default: {
+                System.out.println("MATCH URI: " + sUriMatcher.match(uri));
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
+    }
+
+
+    private static final String sPosterpathSelection =
+            MovieContract.MovieEntry.TABLE_NAME +
+                    "." + MovieContract.MovieEntry.COLUMN_POSTER_PATH + " = ? ";
+
+    private Cursor getMovieByPosterpath(
+            Uri uri, String[] projection) {
+
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sPosterpathSelection,
+                new String[]{uri.getPathSegments().get(1)},
+                null,
+                null,
+                null
+        );
     }
 
 
@@ -136,7 +165,6 @@ public class MovieProvider extends ContentProvider {
 
         switch (match) {
             case MOVIE: {
-                normalizeDate(values);
                 long _id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = MovieContract.MovieEntry.buildMovieUri(_id);
@@ -173,13 +201,13 @@ public class MovieProvider extends ContentProvider {
         return rowsDeleted;
     }
 
-    private void normalizeDate(ContentValues values) {
-        // normalize the date value
-        if (values.containsKey(MovieContract.MovieEntry.COLUMN_RELEASE_DATE)) {
-            long dateValue = values.getAsLong(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
-            values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, MovieContract.MovieEntry.normalizeDate(dateValue));
-        }
-    }
+//    private void normalizeDate(ContentValues values) {
+//        // normalize the date value
+//        if (values.containsKey(MovieContract.MovieEntry.COLUMN_RELEASE_DATE)) {
+//            long dateValue = values.getAsLong(MovieContract.MovieEntry.COLUMN_RELEASE_DATE);
+//            values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, MovieContract.MovieEntry.normalizeDate(dateValue));
+//        }
+//    }
 
     @Override
     public int update(
@@ -190,7 +218,6 @@ public class MovieProvider extends ContentProvider {
 
         switch (match) {
             case MOVIE:
-                normalizeDate(values);
                 rowsUpdated = db.update(MovieContract.MovieEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
@@ -213,7 +240,6 @@ public class MovieProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        normalizeDate(value);
                         long _id = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;

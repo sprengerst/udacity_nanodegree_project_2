@@ -39,7 +39,7 @@ class MovieGridAdapter extends CursorAdapter {
 
         Picasso
                 .with(context)
-                .load(cursor.getString(MainDiscoveryFragment.COL_MOVIE_POSTER_PATH))
+                .load(cursor.getString(Utility.COL_MOVIE_POSTER_PATH))
                 .into(viewHolder.iconView);
     }
 

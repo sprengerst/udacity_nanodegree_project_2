@@ -5,6 +5,7 @@
 package com.sprenger.software.movie.app;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -24,29 +25,7 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     private MovieGridAdapter movieGridAdapter;
     private static final int CURSOR_LOADER_ID = 0;
 
-
-    private static final String[] MOVIE_COLUMNS = {
-            MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_SYNOPSIS,
-            MovieContract.MovieEntry.COLUMN_POSTER_PATH,
-            MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
-            MovieContract.MovieEntry.COLUMN_POPULARITY,
-            MovieContract.MovieEntry.COLUMN_RATING,
-    };
-
-    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
-    // must change.
-    static final int COL_MOVIE_ID = 0;
-    static final int COL_MOVIE_TITLE = 1;
-    static final int COL_MOVIE_SYNOPSIS = 2;
-    static final int COL_MOVIE_POSTER_PATH = 3;
-    static final int COL_MOVIE_RELEASE_DATE = 4;
-    static final int COL_MOVIE_POPUlARITY = 5;
-    static final int COL_MOVIE_RATING = 6;
-
-
-
+    private int mCurrentPos;
 
     public MainDiscoveryFragment() {
     }
@@ -92,6 +71,24 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
         );
 
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                // if it cannot seek to that position.
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
+                    String sortOrder = Utility.getPreferedSortOrder(getActivity());
+                    ((Callback) getActivity())
+                            .onItemSelected(MovieContract.MovieEntry.buildMovieByPosterID(cursor.getString(Utility.COL_MOVIE_POSTER_PATH))
+                            );
+                }
+                mCurrentPos = position;
+            }
+        });
+
+
         return rootView;
     }
 
@@ -118,7 +115,7 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
 
         return new CursorLoader(getActivity(),
                 MovieContract.MovieEntry.CONTENT_URI,
-                MOVIE_COLUMNS,
+                Utility.MOVIE_COLUMNS,
                 null,
                 null,
                 sortOrderSQL);
@@ -140,6 +137,11 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
         System.out.println("SORTORDERCHANGED");
         updateMovieGrid();
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+    }
+
+
+    public interface Callback {
+        public void onItemSelected(Uri dateUri);
     }
 
 }

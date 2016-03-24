@@ -19,8 +19,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (savedInstanceState == null) {
+
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(MovieDetailFragment.DETAIL_URI, getIntent().getData());
+
+            MovieDetailFragment fragment = new MovieDetailFragment();
+            fragment.setArguments(arguments);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MovieDetailFragment())
+                    .add(R.id.movie_detail_container, fragment)
                     .commit();
         }
     }

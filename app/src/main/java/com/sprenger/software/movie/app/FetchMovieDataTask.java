@@ -136,7 +136,6 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
 
 
-
             ContentValues movieValues = new ContentValues();
 
             movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
