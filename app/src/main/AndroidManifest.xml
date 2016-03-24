@@ -39,6 +39,11 @@
                 android:value=".MainDiscoveryActivity" />
         </activity>
 
+        <provider
+            android:authorities="com.sprenger.software.movie.app.data.MovieProvider"
+            android:name="com.sprenger.software.movie.app.data.generated.MovieProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

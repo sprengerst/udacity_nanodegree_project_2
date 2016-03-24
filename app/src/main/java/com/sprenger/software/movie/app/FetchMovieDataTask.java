@@ -4,9 +4,15 @@
 
 package com.sprenger.software.movie.app;
 
+import android.content.ContentProviderOperation;
+import android.content.OperationApplicationException;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.RemoteException;
 import android.util.Log;
+
+import com.sprenger.software.movie.app.data.MovieColumns;
+import com.sprenger.software.movie.app.data.MovieProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,12 +27,10 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 
-class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<MovieSpecification>> {
+class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
 
     private final MainDiscoveryFragment mainDiscoveryFragment;
     private final String LOG_TAG = FetchMovieDataTask.class.getSimpleName();
@@ -36,7 +40,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<MovieSpecific
     }
 
     @Override
-    protected ArrayList<MovieSpecification> doInBackground(String... strings) {
+    protected Void doInBackground(String... strings) {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
@@ -91,8 +95,9 @@ class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<MovieSpecific
         }
 
         try {
-            return getMovieDataFromJson(moviesJSONStr, strings[0]);
+            getMovieDataFromJson(moviesJSONStr, strings[0]);
         } catch (Exception e) {
+            Log.e(LOG_TAG, "Error get movie data from JSON", e);
             e.printStackTrace();
         }
 
@@ -101,7 +106,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<MovieSpecific
     }
 
 
-    private ArrayList<MovieSpecification> getMovieDataFromJson(String forecastJsonStr, final String sortOrder)
+    private void getMovieDataFromJson(String forecastJsonStr, final String sortOrder)
             throws JSONException, ParseException {
 
         final String FILM_LIST = "results";
@@ -116,7 +121,9 @@ class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<MovieSpecific
         JSONObject pageJSON = new JSONObject(forecastJsonStr);
         JSONArray movieArray = pageJSON.getJSONArray(FILM_LIST);
 
-        ArrayList<MovieSpecification> movieCollectionList = new ArrayList<>();
+
+        // Insert the new weather information into the database
+        ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>(movieArray.length());
 
         for (int i = 0; i < movieArray.length(); i++) {
 
@@ -130,25 +137,28 @@ class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<MovieSpecific
             String movieReleaseDate = extractReleaseYear(singleMovieJSON.getString(RELEASEDATE));
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
 
-            movieCollectionList.add(new MovieSpecification(movieId, movieTitle, moviePoster, movieSynopsis, movieRating, movieReleaseDate, moviePopularity));
+
+
+            ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
+                    MovieProvider.Movies.CONTENT_URI);
+            builder.withValue(MovieColumns.TITLE, movieTitle);
+            builder.withValue(MovieColumns.SYNOPSIS, movieSynopsis);
+            builder.withValue(MovieColumns.POSTERPATH, moviePoster);
+            builder.withValue(MovieColumns.RELEASEDATE, movieReleaseDate);
+            builder.withValue(MovieColumns.RATING, movieRating);
+            builder.withValue(MovieColumns.POPULARITY, moviePopularity);
+            batchOperations.add(builder.build());
+
         }
 
-        Collections.sort(movieCollectionList, new Comparator<MovieSpecification>() {
-            @Override
-            public int compare(MovieSpecification mSpec1, MovieSpecification mSpec2) {
-                if (sortOrder.equals(mainDiscoveryFragment.getResources().getStringArray(R.array.pref_sortorder_keystore)[0])) {
-                    return Double.compare(mSpec2.getPopularity(), mSpec1.getPopularity());
-                } else {
-                    return Double.compare(mSpec2.getRating(), mSpec1.getRating());
-                }
-            }
-        });
 
-//        for (MovieSpecification s : movieCollectionList) {
-//            Log.v("MovieEntries", "Movie Entry: " + s);
-//        }
+        try{
+            mainDiscoveryFragment.getActivity().getContentResolver().applyBatch(MovieProvider.AUTHORITY, batchOperations);
+        } catch(RemoteException | OperationApplicationException e){
+            Log.e(LOG_TAG, "Error applying batch insert", e);
+        }
 
-        return movieCollectionList;
+        Log.d(LOG_TAG, "FetchMovieTask Complete. " + batchOperations.size() + " entries added");
 
     }
 
