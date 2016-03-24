@@ -22,11 +22,16 @@ public class MainDiscoveryActivity extends AppCompatActivity {
         mSortOrder = Utility.getPreferedSortOrder(this);
 
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_grid, new MainDiscoveryFragment())
-                    .commit();
-        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.fragment_grid, new MainDiscoveryFragment())
+//                    .commit();
+//        }
+
+
+        MainDiscoveryFragment mainDiscoveryFragment =  ((MainDiscoveryFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_grid));
+//        mainDiscoveryFragment.setUseTodayLayout(!mTwoPane);
     }
 
     @Override

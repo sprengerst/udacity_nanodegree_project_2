@@ -60,7 +60,7 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     private void updateMovieGrid() {
         try {
             FetchMovieDataTask fetchMovieTask = new FetchMovieDataTask(this);
-            fetchMovieTask.execute(Utility.getPreferedSortOrder(getActivity()));
+            fetchMovieTask.execute();
         } catch (Exception e) {
             Log.e("Sync Error",e.toString());
             e.printStackTrace();

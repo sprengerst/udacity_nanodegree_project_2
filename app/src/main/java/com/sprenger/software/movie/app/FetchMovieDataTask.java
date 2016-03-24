@@ -92,7 +92,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
         }
 
         try {
-            getMovieDataFromJson(moviesJSONStr, strings[0]);
+            getMovieDataFromJson(moviesJSONStr);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error get movie data from JSON", e);
             e.printStackTrace();
@@ -103,8 +103,10 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
     }
 
 
-    private void getMovieDataFromJson(String forecastJsonStr, final String sortOrder)
+    private void getMovieDataFromJson(String forecastJsonStr)
             throws JSONException, ParseException {
+
+        System.out.println("FETCHDATA");
 
         final String FILM_LIST = "results";
         final String ID = "id";
@@ -132,7 +134,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             double movieRating = Double.parseDouble(singleMovieJSON.getString(RATING));
             String movieReleaseDate = extractReleaseYear(singleMovieJSON.getString(RELEASEDATE));
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
-            System.out.println("MOVIE: "+movieTitle+"\nRATING: "+movieRating+"\nPOPULARITY: "+moviePopularity);
+
 
 
             ContentValues movieValues = new ContentValues();
