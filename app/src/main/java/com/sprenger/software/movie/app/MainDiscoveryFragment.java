@@ -4,10 +4,8 @@
 
 package com.sprenger.software.movie.app;
 
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -61,11 +59,8 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
 
     private void updateMovieGrid() {
         try {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String sortOrder = prefs.getString(getString(R.string.pref_sortorder_key), getResources().getStringArray(R.array.pref_sortorder_keystore)[0]);
-
             FetchMovieDataTask fetchMovieTask = new FetchMovieDataTask(this);
-            fetchMovieTask.execute(sortOrder);
+            fetchMovieTask.execute(Utility.getPreferedSortOrder(getActivity()));
         } catch (Exception e) {
             Log.e("Sync Error",e.toString());
             e.printStackTrace();
@@ -110,11 +105,23 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args){
-        return new CursorLoader(getActivity(), MovieContract.MovieEntry.CONTENT_URI,
+
+        String sortOrder = Utility.getPreferedSortOrder(getContext());
+        String sortOrderSQL;
+
+        if(sortOrder.equals("most_popular")){
+            sortOrderSQL = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+        }else{
+            sortOrderSQL = MovieContract.MovieEntry.COLUMN_RATING+ " DESC";
+        }
+
+
+        return new CursorLoader(getActivity(),
+                MovieContract.MovieEntry.CONTENT_URI,
                 MOVIE_COLUMNS,
                 null,
                 null,
-                null);
+                sortOrderSQL);
     }
 
     @Override
@@ -127,6 +134,12 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
         movieGridAdapter.swapCursor(null);
     }
 
+    // since we read the location when we create the loader, all we need to do is restart things
+    void onSortOrderChanged( ) {
 
+        System.out.println("SORTORDERCHANGED");
+        updateMovieGrid();
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+    }
 
 }

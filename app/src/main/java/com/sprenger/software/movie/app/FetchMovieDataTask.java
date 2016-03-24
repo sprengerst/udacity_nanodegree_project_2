@@ -119,6 +119,8 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
         JSONArray movieArray = pageJSON.getJSONArray(FILM_LIST);
 
         Vector<ContentValues> cVVector = new Vector<>(movieArray.length());
+
+
         for (int i = 0; i < movieArray.length(); i++) {
 
             JSONObject singleMovieJSON = movieArray.getJSONObject(i);
@@ -130,6 +132,8 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             double movieRating = Double.parseDouble(singleMovieJSON.getString(RATING));
             String movieReleaseDate = extractReleaseYear(singleMovieJSON.getString(RELEASEDATE));
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
+            System.out.println("MOVIE: "+movieTitle+"\nRATING: "+movieRating+"\nPOPULARITY: "+moviePopularity);
+
 
             ContentValues movieValues = new ContentValues();
 
@@ -139,7 +143,6 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
             movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
             movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
-//            movieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
 
             cVVector.add(movieValues);
 
