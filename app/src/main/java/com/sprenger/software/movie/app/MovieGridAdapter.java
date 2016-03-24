@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.sprenger.software.movie.app.data.MovieColumns;
 import com.squareup.picasso.Picasso;
 
 class MovieGridAdapter extends CursorAdapter {
@@ -28,7 +27,8 @@ class MovieGridAdapter extends CursorAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.single_movie_grid_element, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+        System.out.println("DEMOCURSOR: "+cursor);
+         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
 
         return view;
@@ -37,12 +37,11 @@ class MovieGridAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         Picasso
                 .with(context)
-                .load(cursor.getString(cursor.getColumnIndex(MovieColumns.POSTERPATH)))
+                .load(cursor.getString(MainDiscoveryFragment.COL_MOVIE_POSTER_PATH))
                 .into(viewHolder.iconView);
     }
 

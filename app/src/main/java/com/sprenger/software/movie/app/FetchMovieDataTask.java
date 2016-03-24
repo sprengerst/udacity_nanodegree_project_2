@@ -4,15 +4,12 @@
 
 package com.sprenger.software.movie.app;
 
-import android.content.ContentProviderOperation;
-import android.content.OperationApplicationException;
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.RemoteException;
 import android.util.Log;
 
-import com.sprenger.software.movie.app.data.MovieColumns;
-import com.sprenger.software.movie.app.data.MovieProvider;
+import com.sprenger.software.movie.app.data.MovieContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,8 +23,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 
 
 class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
@@ -121,10 +118,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
         JSONObject pageJSON = new JSONObject(forecastJsonStr);
         JSONArray movieArray = pageJSON.getJSONArray(FILM_LIST);
 
-
-        // Insert the new weather information into the database
-        ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>(movieArray.length());
-
+        Vector<ContentValues> cVVector = new Vector<>(movieArray.length());
         for (int i = 0; i < movieArray.length(); i++) {
 
             JSONObject singleMovieJSON = movieArray.getJSONObject(i);
@@ -137,28 +131,29 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             String movieReleaseDate = extractReleaseYear(singleMovieJSON.getString(RELEASEDATE));
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
 
+            ContentValues movieValues = new ContentValues();
 
+            movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
+//            movieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
 
-            ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
-                    MovieProvider.Movies.CONTENT_URI);
-            builder.withValue(MovieColumns.TITLE, movieTitle);
-            builder.withValue(MovieColumns.SYNOPSIS, movieSynopsis);
-            builder.withValue(MovieColumns.POSTERPATH, moviePoster);
-            builder.withValue(MovieColumns.RELEASEDATE, movieReleaseDate);
-            builder.withValue(MovieColumns.RATING, movieRating);
-            builder.withValue(MovieColumns.POPULARITY, moviePopularity);
-            batchOperations.add(builder.build());
+            cVVector.add(movieValues);
 
         }
 
-
-        try{
-            mainDiscoveryFragment.getActivity().getContentResolver().applyBatch(MovieProvider.AUTHORITY, batchOperations);
-        } catch(RemoteException | OperationApplicationException e){
-            Log.e(LOG_TAG, "Error applying batch insert", e);
+        int inserted = 0;
+        // add to database
+        if ( cVVector.size() > 0 ) {
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+            inserted = mainDiscoveryFragment.getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
         }
 
-        Log.d(LOG_TAG, "FetchMovieTask Complete. " + batchOperations.size() + " entries added");
+        Log.d(LOG_TAG, "FetchMovieTask Complete. " + inserted + " Inserted");
 
     }
 
