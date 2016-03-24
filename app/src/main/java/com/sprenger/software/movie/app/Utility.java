@@ -25,6 +25,7 @@ public class Utility {
             MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
             MovieContract.MovieEntry.COLUMN_POPULARITY,
             MovieContract.MovieEntry.COLUMN_RATING,
+            MovieContract.MovieEntry.COLUMN_ID,
     };
 
 
@@ -37,5 +38,9 @@ public class Utility {
     static final int COL_MOVIE_RELEASE_DATE = 4;
     static final int COL_MOVIE_POPUlARITY = 5;
     static final int COL_MOVIE_RATING = 6;
+    static final int COL_MOVIE_MOVIEID = 7;
+
+
+
 
 }

@@ -49,7 +49,7 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // FIXME
         updateMovieGrid();
 
         this.movieGridAdapter = new MovieGridAdapter(getActivity(), null, 0);
@@ -58,18 +58,6 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
 
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie_images);
         gridView.setAdapter(this.movieGridAdapter);
-
-        // TODO start Detailsview
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                                                Intent detailedViewIntent = new Intent(getActivity(), MovieDetailActivity.class).putExtra(Intent.EXTRA_SUBJECT, movieGridAdapter.getItem(i));
-//                                                startActivity(detailedViewIntent);
-                                            }
-                                        }
-
-        );
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

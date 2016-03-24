@@ -137,7 +137,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
 
 
             ContentValues movieValues = new ContentValues();
-
+            movieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
             movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
             movieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
             movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);

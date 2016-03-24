@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     static final String DATABASE_NAME = "movies.db";
 
@@ -17,7 +17,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + MovieContract.MovieEntry.TABLE_NAME + " (" +
                 MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MovieContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
@@ -26,6 +25,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_RATING + " REAL NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL,  "+
+                MovieContract.MovieEntry.COLUMN_ID + " REAL NOT NULL,  "+
                 "UNIQUE (" + MovieContract.MovieEntry.COLUMN_POSTER_PATH + ", " +
                         MovieContract.MovieEntry.COLUMN_TITLE + ") ON CONFLICT REPLACE);";;
 
