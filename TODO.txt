@@ -1,10 +1,6 @@
 exchange everything with RecyclerView
 
-add favorite button
-
-save stuff offline (favorite sort order)
-
-layout (ScrollView over detail page)
+add favorite button & favorite sort order
 
 performance
 

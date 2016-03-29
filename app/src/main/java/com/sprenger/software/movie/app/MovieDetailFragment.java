@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                     .into(mMoviePosterView);
 
 
-            // TODO RATING
+            // TODO RATING DURATION
             mMovieTitleView.setText(data.getString(Utility.COL_MOVIE_TITLE));
             mMovieSynopsisView.setText(data.getString(Utility.COL_MOVIE_SYNOPSIS));
             mMovieSynopsisView.setMovementMethod(new ScrollingMovementMethod());
@@ -161,13 +162,26 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                 e.printStackTrace();
             }
 
-            mMovieReviewRecycler.setAdapter(new ReviewListAdapter(getActivity(), reviewSpecs));
+            ArrayList<ParentObject> parentObjects = new ArrayList<>();
+            for (ReviewSpec reviewSpec : reviewSpecs) {
+                ArrayList<Object> childList = new ArrayList<>();
+                childList.add(reviewSpec.getReview());
+                reviewSpec.setChildObjectList(childList);
+                parentObjects.add(reviewSpec);
+            }
+
+            ReviewExpandableAdapter reviewExpandableAdapter = new ReviewExpandableAdapter(getActivity(), parentObjects);
+            reviewExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+            reviewExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+            reviewExpandableAdapter.setParentAndIconExpandOnClick(true);
+            mMovieReviewRecycler.setAdapter(reviewExpandableAdapter);
 
             LinearLayoutManager verticalManager
                     = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
+            verticalManager.setAutoMeasureEnabled(true);
             mMovieReviewRecycler.setLayoutManager(verticalManager);
-            mMovieReviewRecycler.setHasFixedSize(true);
+//            mMovieReviewRecycler.setHasFixedSize(true);
 
         }
     }
