@@ -4,6 +4,7 @@
 
 package com.sprenger.software.movie.app;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
+import com.sprenger.software.movie.app.data.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
     private TrailerGridAdapter trailerGridAdapter;
     private RecyclerView mMovieReviewRecycler;
+    private MaterialFavoriteButton mMovieFavoriteButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,13 +56,13 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             mUri = arguments.getParcelable(DETAIL_URI);
         }
 
-
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mMoviePosterView = (ImageView) rootView.findViewById(R.id.image_view_detail);
         mMovieSynopsisView = (TextView) rootView.findViewById(R.id.synopsis_text_detail);
         mMovieTitleView = (TextView) rootView.findViewById(R.id.title_text_detail);
         mMovieReleaseDateView = (TextView) rootView.findViewById(R.id.detail_release_date_textview);
         mMovieDurationView = (TextView) rootView.findViewById(R.id.detail_duration_textview);
+        mMovieFavoriteButton = (MaterialFavoriteButton) rootView.findViewById(R.id.detail_favorite_button);
         movieRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_trailers);
         mMovieRatingView = (TextView) rootView.findViewById(R.id.detail_rating_textview);
         mMovieReviewRecycler = (RecyclerView) rootView.findViewById(R.id.recyclerview_reviews);
@@ -104,8 +108,18 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(final Loader<Cursor> loader, final Cursor data) {
         if (data != null && data.moveToFirst()) {
+
+            final String movieId = data.getString(Utility.COL_MOVIE_ID);
+            final String movieTitle = data.getString(Utility.COL_MOVIE_TITLE);
+            final String moviePopularity = data.getString(Utility.COL_MOVIE_POPUlARITY);
+            final String moviePoster = data.getString(Utility.COL_MOVIE_POSTER_PATH);
+            final String movieSynopsis = data.getString(Utility.COL_MOVIE_SYNOPSIS);
+            final String movieReleaseDate = data.getString(Utility.COL_MOVIE_RELEASE_DATE);
+            final String movieRating = data.getString(Utility.COL_MOVIE_RATING);
+            final String movieDBID = data.getString(Utility.COL_MOVIE_MOVIEID);
+
 
             Picasso
                     .with(getActivity())
@@ -114,17 +128,17 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
 
             // TODO RATING DURATION
-            mMovieTitleView.setText(data.getString(Utility.COL_MOVIE_TITLE));
-            mMovieSynopsisView.setText(data.getString(Utility.COL_MOVIE_SYNOPSIS));
+            mMovieTitleView.setText(movieTitle);
+            mMovieSynopsisView.setText(movieSynopsis);
             mMovieSynopsisView.setMovementMethod(new ScrollingMovementMethod());
-            mMovieReleaseDateView.setText("RELEASE: " + data.getString(Utility.COL_MOVIE_RELEASE_DATE));
-            mMovieRatingView.setText("RATING: " + data.getString(Utility.COL_MOVIE_RATING) + "/10");
+            mMovieReleaseDateView.setText("RELEASE: " + movieReleaseDate);
+            mMovieRatingView.setText("RATING: " + movieRating + "/10");
 
             ArrayList<String> trailerList = new ArrayList<>();
 
             FetchTrailerDataTask fetchTrailerDataTask = new FetchTrailerDataTask(getContext());
             try {
-                trailerList = fetchTrailerDataTask.execute(data.getString(Utility.COL_MOVIE_MOVIEID)).get();
+                trailerList = fetchTrailerDataTask.execute(movieDBID).get();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -154,7 +168,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             ArrayList<ReviewSpec> reviewSpecs = new ArrayList<>();
             FetchReviewDataTask fetchReviewDataTask = new FetchReviewDataTask(getContext());
             try {
-                reviewSpecs = fetchReviewDataTask.execute(data.getString(Utility.COL_MOVIE_MOVIEID)).get();
+                reviewSpecs = fetchReviewDataTask.execute(movieDBID).get();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -181,7 +195,33 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
             verticalManager.setAutoMeasureEnabled(true);
             mMovieReviewRecycler.setLayoutManager(verticalManager);
-//            mMovieReviewRecycler.setHasFixedSize(true);
+
+
+            mMovieFavoriteButton.setFavorite(data.getInt(Utility.COL_MOVIE_ISFAVORITE) == 1 ? true : false);
+
+            mMovieFavoriteButton.setOnFavoriteChangeListener(
+                    new MaterialFavoriteButton.OnFavoriteChangeListener() {
+                        @Override
+                        public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                            System.out.println("FAVORITE :" + favorite);
+
+
+                            Uri alterMovie = MovieContract.MovieEntry.buildMovieByMovieId(data.getString(Utility.COL_MOVIE_MOVIEID));
+
+                            ContentValues alteredMovieValues = new ContentValues();
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
+                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, favorite ? 1 : 0);
+
+                            getContext().getContentResolver().update(alterMovie,alteredMovieValues, MovieContract.MovieEntry._ID+"= ?",new String[]{movieId});
+                            System.out.println("UPDATED ENTRIES");
+                        }
+                    });
 
         }
     }

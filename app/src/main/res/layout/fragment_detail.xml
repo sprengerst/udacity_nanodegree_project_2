@@ -68,6 +68,12 @@
                 android:layout_height="wrap_content"
                 android:text="9.1/10" />
 
+            <com.github.ivbaranov.mfb.MaterialFavoriteButton
+                android:id="@+id/detail_favorite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -32,6 +32,7 @@ public class MovieContract {
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_POPULARITY = "popularity";
         public static final String COLUMN_RELEASE_DATE = "releaseDate";
+        public static final String COLUMN_IS_FAVORITE = "isFavoriteMovie";
 
 
         public static Uri buildMovieUri(long id) {

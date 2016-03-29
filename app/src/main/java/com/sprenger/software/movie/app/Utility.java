@@ -29,10 +29,11 @@ public class Utility {
             MovieContract.MovieEntry.COLUMN_POPULARITY,
             MovieContract.MovieEntry.COLUMN_RATING,
             MovieContract.MovieEntry.COLUMN_ID,
+            MovieContract.MovieEntry.COLUMN_IS_FAVORITE,
     };
 
 
-    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+    // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
     // must change.
     static final int COL_MOVIE_ID = 0;
     static final int COL_MOVIE_TITLE = 1;
@@ -42,6 +43,7 @@ public class Utility {
     static final int COL_MOVIE_POPUlARITY = 5;
     static final int COL_MOVIE_RATING = 6;
     static final int COL_MOVIE_MOVIEID = 7;
+    static final int COL_MOVIE_ISFAVORITE = 8;
 
 
     public static void watchYoutubeVideo(String id,Context context){

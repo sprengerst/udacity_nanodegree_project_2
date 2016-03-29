@@ -143,6 +143,7 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
             movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
             movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, 0);
 
             cVVector.add(movieValues);
 

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     static final String DATABASE_NAME = "movies.db";
 
@@ -25,6 +25,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_RATING + " REAL NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL,  "+
+                MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " BOOLEAN NOT NULL,  "+
                 MovieContract.MovieEntry.COLUMN_ID + " REAL NOT NULL,  "+
                 "UNIQUE (" + MovieContract.MovieEntry.COLUMN_ID + ") ON CONFLICT REPLACE);";;
 
