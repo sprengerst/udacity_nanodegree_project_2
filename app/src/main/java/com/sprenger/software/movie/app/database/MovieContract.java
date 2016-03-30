@@ -25,7 +25,7 @@ public class MovieContract {
 
         public static final String TABLE_NAME = "movies";
 
-        public static final String COLUMN_ID = "movie_id";
+        public static final String COLUMN_MOVIEDBID = "movie_id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_POSTER_PATH = "posterPath";
         public static final String COLUMN_SYNOPSIS = "synopsis";

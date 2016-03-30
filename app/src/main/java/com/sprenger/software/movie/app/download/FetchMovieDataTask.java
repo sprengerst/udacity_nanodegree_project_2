@@ -142,7 +142,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             Cursor alreadyExist = mainDiscoveryFragment.getContext().getContentResolver().query(
                     MovieContract.MovieEntry.CONTENT_URI,
                     new String[]{MovieContract.MovieEntry.COLUMN_IS_FAVORITE},
-                    MovieContract.MovieEntry.COLUMN_ID + "= ?",
+                    MovieContract.MovieEntry.COLUMN_MOVIEDBID + "= ?",
                     new String[]{movieId},
                     null);
 
@@ -152,7 +152,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             }
 
             ContentValues movieValues = new ContentValues();
-            movieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIEDBID, movieId);
             movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
             movieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
             movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);

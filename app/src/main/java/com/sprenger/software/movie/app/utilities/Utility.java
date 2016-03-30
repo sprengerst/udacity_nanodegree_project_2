@@ -38,8 +38,9 @@ public class Utility {
             MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
             MovieContract.MovieEntry.COLUMN_POPULARITY,
             MovieContract.MovieEntry.COLUMN_RATING,
-            MovieContract.MovieEntry.COLUMN_ID,
             MovieContract.MovieEntry.COLUMN_IS_FAVORITE,
+            MovieContract.MovieEntry.COLUMN_MOVIEDBID,
+
     };
 
 
@@ -52,8 +53,9 @@ public class Utility {
     public static final int COL_MOVIE_RELEASE_DATE = 4;
     public static final int COL_MOVIE_POPUlARITY = 5;
     public static final int COL_MOVIE_RATING = 6;
-    public static final int COL_MOVIE_MOVIEID = 7;
-    public static final int COL_MOVIE_ISFAVORITE = 8;
+    public static final int COL_MOVIE_ISFAVORITE = 7;
+    public static final int COL_MOVIE_MOVIEDBID = 8;
+
 
 
     public static void watchYoutubeVideo(String id, Context context) {

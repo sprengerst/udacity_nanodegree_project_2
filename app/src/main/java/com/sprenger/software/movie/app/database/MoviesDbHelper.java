@@ -26,8 +26,8 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_RATING + " REAL NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL,  "+
                 MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " BOOLEAN NOT NULL,  "+
-                MovieContract.MovieEntry.COLUMN_ID + " REAL NOT NULL,  "+
-                "UNIQUE (" + MovieContract.MovieEntry.COLUMN_ID + ") ON CONFLICT REPLACE);";
+                MovieContract.MovieEntry.COLUMN_MOVIEDBID + " REAL NOT NULL,  "+
+                "UNIQUE (" + MovieContract.MovieEntry.COLUMN_MOVIEDBID + ") ON CONFLICT REPLACE);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
     }

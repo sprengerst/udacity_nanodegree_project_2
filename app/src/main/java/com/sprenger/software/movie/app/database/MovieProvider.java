@@ -93,7 +93,7 @@ public class MovieProvider extends ContentProvider {
 
     private static final String sMovieIDSelection =
             MovieContract.MovieEntry.TABLE_NAME +
-                    "." + MovieContract.MovieEntry.COLUMN_ID + " = ? ";
+                    "." + MovieContract.MovieEntry.COLUMN_MOVIEDBID + " = ? ";
 
     private Cursor getMovieByMovieID(
             Uri uri, String[] projection) {

@@ -6,6 +6,7 @@ package com.sprenger.software.movie.app;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,11 +19,11 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
-import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.sprenger.software.movie.app.configuration.ReviewExpandableAdapter;
 import com.sprenger.software.movie.app.configuration.ReviewSpec;
 import com.sprenger.software.movie.app.configuration.TrailerGridAdapter;
@@ -38,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MovieDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int DETAIL_LOADER = 0;
+    private static final int DETAIL_LOADER = 111;
     static final String DETAIL_URI = "DETAIL_URI";
     private Uri mUri;
 
@@ -46,12 +47,11 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mMovieSynopsisView;
     private TextView mMovieTitleView;
     private TextView mMovieReleaseDateView;
-    private TextView mMovieDurationView;
     private RecyclerView movieRecyclerView;
     private TextView mMovieRatingView;
     private TrailerGridAdapter trailerGridAdapter;
     private RecyclerView mMovieReviewRecycler;
-    private MaterialFavoriteButton mMovieFavoriteButton;
+    private ImageButton mMovieFavoriteButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +68,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         mMovieSynopsisView = (TextView) rootView.findViewById(R.id.synopsis_text_detail);
         mMovieTitleView = (TextView) rootView.findViewById(R.id.title_text_detail);
         mMovieReleaseDateView = (TextView) rootView.findViewById(R.id.detail_release_date_textview);
-        mMovieFavoriteButton = (MaterialFavoriteButton) rootView.findViewById(R.id.detail_favorite_button);
+        mMovieFavoriteButton = (ImageButton) rootView.findViewById(R.id.detail_favorite_button);
         movieRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_trailers);
         mMovieRatingView = (TextView) rootView.findViewById(R.id.detail_rating_textview);
         mMovieReviewRecycler = (RecyclerView) rootView.findViewById(R.id.recyclerview_reviews);
@@ -100,6 +100,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (null != mUri) {
+
             // Now create and return a CursorLoader that will take care of
             // creating a Cursor for the data being displayed.
             return new CursorLoader(
@@ -121,13 +122,14 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             setComponentsVisibility(View.VISIBLE);
 
             final String movieId = data.getString(Utility.COL_MOVIE_ID);
+
             final String movieTitle = data.getString(Utility.COL_MOVIE_TITLE);
             final String moviePopularity = data.getString(Utility.COL_MOVIE_POPUlARITY);
             final String moviePoster = data.getString(Utility.COL_MOVIE_POSTER_PATH);
             final String movieSynopsis = data.getString(Utility.COL_MOVIE_SYNOPSIS);
             final String movieReleaseDate = data.getString(Utility.COL_MOVIE_RELEASE_DATE);
             final String movieRating = data.getString(Utility.COL_MOVIE_RATING);
-            final String mMovieDBID = data.getString(Utility.COL_MOVIE_MOVIEID);
+            final String mMovieDBID = data.getString(Utility.COL_MOVIE_MOVIEDBID);
 
             Picasso
                     .with(getActivity())
@@ -142,31 +144,28 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             mMovieRatingView.setText("RATING: " + movieRating + "/10");
 
 
-            mMovieFavoriteButton.setFavorite(data.getInt(Utility.COL_MOVIE_ISFAVORITE) == 1 ? true : false);
 
-            mMovieFavoriteButton.setOnFavoriteChangeListener(
-                    new MaterialFavoriteButton.OnFavoriteChangeListener() {
-                        @Override
-                        public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                            System.out.println("FAVORITE :" + favorite);
+            mMovieFavoriteButton.setSelected(data.getInt(Utility.COL_MOVIE_ISFAVORITE) == 1 ? true : false);
+            mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    mMovieFavoriteButton.setSelected(!mMovieFavoriteButton.isSelected());
 
-                            Uri alterMovie = MovieContract.MovieEntry.buildMovieByMovieId(data.getString(Utility.COL_MOVIE_MOVIEID));
+                    Uri alterMovie = MovieContract.MovieEntry.buildMovieByMovieId(data.getString(Utility.COL_MOVIE_MOVIEDBID));
+                    ContentValues alteredMovieValues = new ContentValues();
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
+                    alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, mMovieFavoriteButton.isSelected() ? 1 : 0);
 
-                            ContentValues alteredMovieValues = new ContentValues();
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, favorite ? 1 : 0);
-
-                            getContext().getContentResolver().update(alterMovie, alteredMovieValues, MovieContract.MovieEntry._ID + "= ?", new String[]{movieId});
-                            System.out.println("UPDATED ENTRIES");
-                        }
-                    });
-
+                    getContext().getContentResolver().update(alterMovie, alteredMovieValues, MovieContract.MovieEntry._ID + "= ?", new String[]{movieId});
+                    System.out.println("UPDATED ENTRIES: " + movieTitle + " : " + movieId);
+                }
+            });
 
             if (Utility.isNetworkAvailable(getContext())) {
 
@@ -247,7 +246,34 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     public void onFavoriteOptionChanged() {
         if (null != mUri) {
 
+            Cursor topEntry;
+            if(Utility.getOnlyFavoriteOption(getContext())) {
+                topEntry = getContext().getContentResolver().query(
+                        MovieContract.MovieEntry.CONTENT_URI,
+                        null,
+                        MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " = ?",
+                        new String[]{"1"},
+                        Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
+            }else{
+                topEntry = getContext().getContentResolver().query(
+                        MovieContract.MovieEntry.CONTENT_URI,
+                        null,
+                        MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " = ?",
+                        new String[]{"0"},
+                        Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
+            }
+
+            System.out.println("TOPENTRY:" +DatabaseUtils.dumpCursorToString(topEntry));
+
+
+            if(topEntry.moveToFirst()){
+
+                mUri = MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID));
+                System.out.println("URI: " + MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID)));
+            }
+
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+
         }
     }
 }

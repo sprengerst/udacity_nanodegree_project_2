@@ -83,15 +83,17 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         }
 
         if (onlyFavorites != mOnlyFavorites) {
-            MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
-            if (null != ff) {
-                ff.onFavoriteOptionChanged();
-            }
 
             MovieDetailFragment df = (MovieDetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
             if ( null != df ) {
                 df.onFavoriteOptionChanged();
             }
+
+            MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
+            if (null != ff) {
+                ff.onFavoriteOptionChanged();
+            }
+
 
             mOnlyFavorites = onlyFavorites;
         }

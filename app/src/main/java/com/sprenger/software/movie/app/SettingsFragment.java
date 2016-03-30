@@ -53,8 +53,6 @@ public class SettingsFragment extends PreferenceFragment
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
-        } else {
-            preference.setSummary(stringValue);
         }
 
         return true;
