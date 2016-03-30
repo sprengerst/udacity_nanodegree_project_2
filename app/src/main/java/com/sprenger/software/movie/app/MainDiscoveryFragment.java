@@ -168,11 +168,6 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 
-    void onFavoriteOptionChanged() {
-        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
-    }
-
-
     public interface Callback {
         public void onItemSelected(Uri dateUri);
     }

@@ -42,11 +42,6 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         } else {
             mTwoPane = false;
         }
-
-
-        MainDiscoveryFragment mainDiscoveryFragment = ((MainDiscoveryFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_grid));
-
     }
 
     @Override
@@ -72,39 +67,30 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         super.onResume();
         String sortOrder = Utility.getPreferedSortOrder(this);
         boolean onlyFavorites = Utility.getOnlyFavoriteOption(this);
-        // update the location in our second pane using the fragment manager
-        if (sortOrder != null && !sortOrder.equals(mSortOrder)) {
+
+        if (onlyFavorites != mOnlyFavorites || sortOrder != null && !sortOrder.equals(mSortOrder)) {
+
+            MovieDetailFragment df = (MovieDetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (null != df) {
+                df.updateLoadedEntry();
+            }
+
+            mOnlyFavorites = onlyFavorites;
+
             MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
             if (null != ff) {
                 ff.onSortOrderChanged();
             }
 
             mSortOrder = sortOrder;
-        }
 
-        if (onlyFavorites != mOnlyFavorites) {
-
-            MovieDetailFragment df = (MovieDetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-            if ( null != df ) {
-                df.updateLoadedEntry();
-            }
-
-            MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
-            if (null != ff) {
-                ff.onFavoriteOptionChanged();
-            }
-
-
-            mOnlyFavorites = onlyFavorites;
         }
     }
 
     @Override
     public void onItemSelected(Uri contentUri) {
         if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
+
             Bundle args = new Bundle();
             args.putParcelable(MovieDetailFragment.DETAIL_URI, contentUri);
 
