@@ -5,7 +5,8 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import java.util.List;
 
 /**
- * Created by stefa on 24.03.2016.
+ * Created by Stefan Sprenger on 24.03.2016.
+ *
  */
 public class ReviewSpec implements ParentObject {
 

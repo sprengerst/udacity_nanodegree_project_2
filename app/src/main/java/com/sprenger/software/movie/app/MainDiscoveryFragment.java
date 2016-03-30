@@ -53,12 +53,16 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     }
 
     private void updateMovieGrid() {
-        try {
-            FetchMovieDataTask fetchMovieTask = new FetchMovieDataTask(this);
-            fetchMovieTask.execute();
-        } catch (Exception e) {
-            Log.e("Sync Error", e.toString());
-            e.printStackTrace();
+        if (Utility.isNetworkAvailable(getContext())) {
+            try {
+                FetchMovieDataTask fetchMovieTask = new FetchMovieDataTask(this);
+                fetchMovieTask.execute();
+            } catch (Exception e) {
+                Log.e("Sync Error", e.toString());
+                e.printStackTrace();
+            }
+        } else {
+            Utility.showToast("Check your Network Connection", getContext());
         }
     }
 

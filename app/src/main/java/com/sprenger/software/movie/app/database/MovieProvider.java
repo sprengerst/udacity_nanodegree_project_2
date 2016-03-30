@@ -1,18 +1,4 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.sprenger.software.movie.app.database;
 
 import android.annotation.TargetApi;
@@ -26,13 +12,11 @@ import android.net.Uri;
 
 public class MovieProvider extends ContentProvider {
 
-    // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private MoviesDbHelper mOpenHelper;
 
     static final int MOVIE = 100;
     static final int MOVIE_WITH_MOVIEID = 101;
-
 
     private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
 
@@ -42,33 +26,6 @@ public class MovieProvider extends ContentProvider {
         sWeatherByLocationSettingQueryBuilder.setTables(
                 MovieContract.MovieEntry.TABLE_NAME);
     }
-
-
-//    private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
-//        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
-//        long startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
-//
-//        String[] selectionArgs;
-//        String selection;
-//
-//        if (startDate == 0) {
-//            selection = sLocationSettingSelection;
-//            selectionArgs = new String[]{locationSetting};
-//        } else {
-//            selectionArgs = new String[]{locationSetting, Long.toString(startDate)};
-//            selection = sLocationSettingWithStartDateSelection;
-//        }
-//
-//        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-//                projection,
-//                selection,
-//                selectionArgs,
-//                null,
-//                null,
-//                sortOrder
-//        );
-//    }
-
 
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -86,11 +43,6 @@ public class MovieProvider extends ContentProvider {
         return true;
     }
 
-    /*
-        Students: Here's where you'll code the getType function that uses the UriMatcher.  You can
-        test this by uncommenting testGetType in TestProvider.
-
-     */
     @Override
     public String getType(Uri uri) {
 

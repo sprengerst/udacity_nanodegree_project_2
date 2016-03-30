@@ -4,15 +4,17 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.sprenger.software.movie.app.R;
 import com.sprenger.software.movie.app.database.MovieContract;
 
 /**
  * Created by stefa on 24.03.2016.
- *
  */
 public class Utility {
     public static String getPreferedSortOrder(Context context) {
@@ -44,7 +46,7 @@ public class Utility {
     // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
     // must change.
     public static final int COL_MOVIE_ID = 0;
-    public  static final int COL_MOVIE_TITLE = 1;
+    public static final int COL_MOVIE_TITLE = 1;
     public static final int COL_MOVIE_SYNOPSIS = 2;
     public static final int COL_MOVIE_POSTER_PATH = 3;
     public static final int COL_MOVIE_RELEASE_DATE = 4;
@@ -54,7 +56,7 @@ public class Utility {
     public static final int COL_MOVIE_ISFAVORITE = 8;
 
 
-    public static void watchYoutubeVideo(String id,Context context){
+    public static void watchYoutubeVideo(String id, Context context) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
             context.startActivity(intent);
@@ -65,5 +67,17 @@ public class Utility {
         }
     }
 
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static void showToast(String toastText, Context context) {
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, toastText, duration);
+        toast.show();
+    }
 
 }
