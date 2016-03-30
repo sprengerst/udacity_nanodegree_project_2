@@ -5,7 +5,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_border">
+    android:background="@drawable/review_background_border">
 
     <TextView
         android:id="@+id/list_item_review_author"

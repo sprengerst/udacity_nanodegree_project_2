@@ -69,7 +69,7 @@
                 android:id="@+id/detail_favorite_button"
                 android:layout_width="90dp"
                 android:layout_height="73dp"
-                android:background="@drawable/favorise_button"
+                android:background="@drawable/favorise_button_state"
                 />
 
         </LinearLayout>

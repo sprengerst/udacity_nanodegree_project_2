@@ -2,10 +2,6 @@
  * Created by Stefan Sprenger
  */
 
-/*
- * Created by Stefan Sprenger
- */
-
 package com.sprenger.software.movie.app;
 
 import android.os.Bundle;
