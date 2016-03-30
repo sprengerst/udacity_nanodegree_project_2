@@ -28,6 +28,7 @@
     <string name="detail_release_date_textview_demo">2015</string>
     <string name="detail_rating_textview_demo">9.1/10</string>
     <string name="synopsis_text_detail_demo">blabdfkbs lfbsakld bfklabsd kbflkasdb fsd sf asdf ads fasd asdf asdf ads fasd fasd fasd fads f</string>
+    <string name="youtubelink">http://www.youtube.com/watch?v=</string>
 
 
 </resources>

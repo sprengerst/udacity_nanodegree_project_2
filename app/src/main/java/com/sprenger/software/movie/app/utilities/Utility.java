@@ -62,7 +62,7 @@ public class Utility {
             context.startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.youtube.com/watch?v=" + id));
+                    Uri.parse(context.getString(R.string.youtubelink) + id));
             context.startActivity(intent);
         }
     }
