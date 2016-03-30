@@ -1,3 +1,7 @@
+/*
+ * Created by Stefan Sprenger
+ */
+
 package com.sprenger.software.movie.app.configuration;
 
 import android.view.View;

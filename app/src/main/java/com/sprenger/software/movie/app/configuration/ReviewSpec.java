@@ -1,13 +1,13 @@
+/*
+ * Created by Stefan Sprenger
+ */
+
 package com.sprenger.software.movie.app.configuration;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 
 import java.util.List;
 
-/**
- * Created by Stefan Sprenger on 24.03.2016.
- *
- */
 public class ReviewSpec implements ParentObject {
 
     private List<Object> mChildrenList;

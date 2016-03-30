@@ -1,3 +1,7 @@
+/*
+ * Created by Stefan Sprenger
+ */
+
 package com.sprenger.software.movie.app.configuration;
 
 import android.content.Context;
@@ -13,18 +17,11 @@ import java.util.List;
 
 public class ReviewExpandableAdapter extends ExpandableRecyclerAdapter<ReviewParentViewHolder, ReviewChildViewHolder> {
     private final LayoutInflater mInflater;
-    private Context context;
-    private List<ParentObject> reviewList;
-
 
     public ReviewExpandableAdapter(Context context, List<ParentObject> reviewList) {
         super(context,reviewList);
-        this.reviewList = reviewList;
-        this.context = context;
         mInflater = LayoutInflater.from(context);
     }
-
-
 
     @Override
     public ReviewParentViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {

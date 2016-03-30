@@ -18,8 +18,6 @@ import com.squareup.picasso.Picasso;
 
 public class MovieGridAdapter extends CursorAdapter {
 
-
-
     public MovieGridAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -29,8 +27,7 @@ public class MovieGridAdapter extends CursorAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.single_movie_grid_element, parent, false);
 
-        System.out.println("DEMOCURSOR: "+cursor);
-         ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
 
         return view;
@@ -46,8 +43,6 @@ public class MovieGridAdapter extends CursorAdapter {
                 .load(cursor.getString(Utility.COL_MOVIE_POSTER_PATH))
                 .into(viewHolder.iconView);
     }
-
-
 
 
     public static class ViewHolder {

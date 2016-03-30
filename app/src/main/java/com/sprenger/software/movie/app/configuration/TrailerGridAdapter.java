@@ -1,3 +1,7 @@
+/*
+ * Created by Stefan Sprenger
+ */
+
 package com.sprenger.software.movie.app.configuration;
 
 import android.content.Context;
@@ -29,7 +33,6 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_trailer_grid_element, null);
-
         CustomViewHolder viewHolder = new CustomViewHolder(view);
         return viewHolder;
     }
@@ -56,8 +59,6 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
         return (null != trailerItemList ? trailerItemList.size() : 0);
     }
 
-
-
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         protected ImageView imageView;
         protected TextView textView;
@@ -74,7 +75,7 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
         @Override
         public void onClick(View view) {
             CustomViewHolder holder = (CustomViewHolder) view.getTag();
-            int position = holder.getPosition();
+            int position = holder.getAdapterPosition();
             Utility.watchYoutubeVideo(trailerLinkList.get(position), mContext);
         }
     };
