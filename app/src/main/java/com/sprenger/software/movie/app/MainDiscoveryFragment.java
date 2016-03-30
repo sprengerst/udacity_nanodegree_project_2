@@ -30,6 +30,8 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     private static final int CURSOR_LOADER_ID = 0;
 
     private int mCurrentPos;
+    private static final String SELECTED_KEY = "selected_position";
+    private GridView mMovieGridview;
 
     public MainDiscoveryFragment() {
     }
@@ -75,14 +77,13 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         View rootView = inflater.inflate(R.layout.fragment_discovery_main, container, false);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie_images);
+        mMovieGridview = gridView;
         gridView.setAdapter(this.movieGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // CursorAdapter returns a cursor at the correct position for getItem(), or null
-                // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
                     String sortOrder = Utility.getPreferedSortOrder(getActivity());
@@ -97,6 +98,11 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         });
 
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            mCurrentPos = savedInstanceState.getInt(SELECTED_KEY);
+        }
+
+
         return rootView;
     }
 
@@ -106,6 +112,16 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         super.onActivityCreated(savedInstanceState);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mCurrentPos != GridView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mCurrentPos);
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -142,6 +158,9 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         movieGridAdapter.swapCursor(data);
+        if (mCurrentPos != GridView.INVALID_POSITION) {
+            mMovieGridview.smoothScrollToPosition(mCurrentPos);
+        }
     }
 
     @Override
@@ -149,19 +168,13 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         movieGridAdapter.swapCursor(null);
     }
 
-    // since we read the location when we create the loader, all we need to do is restart things
     void onSortOrderChanged() {
-
         System.out.println("SORTORDERCHANGED");
-        //updateMovieGrid();
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 
-    // since we read the location when we create the loader, all we need to do is restart things
     void onFavoriteOptionChanged() {
-
-        System.out.println("SORTORDERCHANGED");
-        //updateMovieGrid();
+        System.out.println("FAVORITE SHOW CHANGED");
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 

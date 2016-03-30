@@ -14,7 +14,8 @@ import com.sprenger.software.movie.app.R;
 import com.sprenger.software.movie.app.database.MovieContract;
 
 /**
- * Created by stefa on 24.03.2016.
+ * Created by Stefan Sprenger on 24.03.2016.
+ *
  */
 public class Utility {
     public static String getPreferedSortOrder(Context context) {
@@ -28,7 +29,6 @@ public class Utility {
         boolean onlyFavorite = prefs.getBoolean(context.getString(R.string.pref_favorite_key), false);
         return onlyFavorite;
     }
-
 
     public static final String[] MOVIE_COLUMNS = {
             MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID,
@@ -75,9 +75,7 @@ public class Utility {
     }
 
     public static void showToast(String toastText, Context context) {
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, toastText, duration);
-        toast.show();
+        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
     }
 
 }

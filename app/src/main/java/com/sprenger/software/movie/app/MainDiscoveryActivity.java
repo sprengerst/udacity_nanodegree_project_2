@@ -18,6 +18,9 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
 
     private String mSortOrder;
     private boolean mOnlyFavorites;
+    private boolean mTwoPane;
+
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +30,23 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         mOnlyFavorites = Utility.getOnlyFavoriteOption(this);
 
         setContentView(R.layout.activity_main);
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.fragment_grid, new MainDiscoveryFragment())
-//                    .commit();
-//        }
+
+        if (findViewById(R.id.movie_detail_container) != null) {
+            mTwoPane = true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_detail_container, new MovieDetailFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
+        }
 
 
-        MainDiscoveryFragment mainDiscoveryFragment =  ((MainDiscoveryFragment)getSupportFragmentManager()
+        MainDiscoveryFragment mainDiscoveryFragment = ((MainDiscoveryFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_grid));
-//        mainDiscoveryFragment.setUseTodayLayout(!mTwoPane);
+
     }
 
     @Override
@@ -50,7 +60,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            startActivity( new Intent(this, SettingsActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -64,11 +74,12 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         boolean onlyFavorites = Utility.getOnlyFavoriteOption(this);
         // update the location in our second pane using the fragment manager
         if (sortOrder != null && !sortOrder.equals(mSortOrder)) {
-            MainDiscoveryFragment ff = (MainDiscoveryFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
-            if ( null != ff ) {
+            MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
+            if (null != ff) {
                 ff.onSortOrderChanged();
             }
 
+            //FIXME
 //            DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
 //            if ( null != df ) {
 //                df.onLocationChanged(location);
@@ -76,9 +87,9 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
             mSortOrder = sortOrder;
         }
 
-        if (onlyFavorites != mOnlyFavorites){
-            MainDiscoveryFragment ff = (MainDiscoveryFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
-            if ( null != ff ) {
+        if (onlyFavorites != mOnlyFavorites) {
+            MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
+            if (null != ff) {
                 ff.onFavoriteOptionChanged();
             }
             mOnlyFavorites = onlyFavorites;
@@ -86,24 +97,24 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
     }
 
     @Override
-    public void onItemSelected(Uri dateUri) {
-//        if (mTwoPane) {
-//            // In two-pane mode, show the detail view in this activity by
-//            // adding or replacing the detail fragment using a
-//            // fragment transaction.
-//            Bundle args = new Bundle();
-//            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
-//
-//            DetailFragment fragment = new DetailFragment();
-//            fragment.setArguments(args);
-//
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
-//                    .commit();
-//        } else {
+    public void onItemSelected(Uri contentUri) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle args = new Bundle();
+            args.putParcelable(MovieDetailFragment.DETAIL_URI, contentUri);
+
+            MovieDetailFragment fragment = new MovieDetailFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
             Intent intent = new Intent(this, MovieDetailActivity.class)
-                    .setData(dateUri);
+                    .setData(contentUri);
             startActivity(intent);
-//        }
+        }
     }
 }

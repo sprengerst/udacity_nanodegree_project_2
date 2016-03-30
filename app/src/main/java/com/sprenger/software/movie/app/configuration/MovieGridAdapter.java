@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 public class MovieGridAdapter extends CursorAdapter {
 
+
+
     public MovieGridAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -44,6 +46,8 @@ public class MovieGridAdapter extends CursorAdapter {
                 .load(cursor.getString(Utility.COL_MOVIE_POSTER_PATH))
                 .into(viewHolder.iconView);
     }
+
+
 
 
     public static class ViewHolder {

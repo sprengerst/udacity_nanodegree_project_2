@@ -4,5 +4,7 @@
     android:name="com.sprenger.software.movie.app.MainDiscoveryFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.sunshine.app.ForecastFragment"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    tools:context="com.sprenger.software.movie.app.MainDiscoveryFragment"
     tools:layout="@android:layout/list_content" />
