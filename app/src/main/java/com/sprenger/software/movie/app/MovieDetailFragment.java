@@ -209,7 +209,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                             Uri alterMovie = MovieContract.MovieEntry.buildMovieByMovieId(data.getString(Utility.COL_MOVIE_MOVIEID));
 
                             ContentValues alteredMovieValues = new ContentValues();
-                            alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
                             alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movieTitle);
                             alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, movieSynopsis);
                             alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, moviePoster);

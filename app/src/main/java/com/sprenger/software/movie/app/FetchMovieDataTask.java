@@ -5,6 +5,8 @@
 package com.sprenger.software.movie.app;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -134,6 +136,12 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             String movieReleaseDate = extractReleaseYear(singleMovieJSON.getString(RELEASEDATE));
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
 
+            int isFavorite = 0;
+            Cursor alreadyExist = mainDiscoveryFragment.getContext().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{MovieContract.MovieEntry.COLUMN_IS_FAVORITE},MovieContract.MovieEntry.COLUMN_ID+"= ?",new String[]{movieId},null);
+            if(alreadyExist != null && alreadyExist.getColumnCount()!=0 && alreadyExist.moveToFirst()){
+                System.out.println("CURSOR: "+DatabaseUtils.dumpCursorToString(alreadyExist));
+                isFavorite = alreadyExist.getInt(0);
+            }
 
             ContentValues movieValues = new ContentValues();
             movieValues.put(MovieContract.MovieEntry.COLUMN_ID, movieId);
@@ -143,10 +151,9 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movieReleaseDate);
             movieValues.put(MovieContract.MovieEntry.COLUMN_RATING, movieRating);
             movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, moviePopularity);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, 0);
+            movieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, isFavorite);
 
             cVVector.add(movieValues);
-
         }
 
         int inserted = 0;
