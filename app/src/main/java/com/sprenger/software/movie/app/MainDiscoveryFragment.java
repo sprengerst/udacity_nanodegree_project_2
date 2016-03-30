@@ -85,7 +85,6 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
-                    System.out.println("CURSOR ID: " + cursor.getString(Utility.COL_MOVIE_MOVIEDBID));
                     ((Callback) getActivity())
                             .onItemSelected(MovieContract.MovieEntry.buildMovieByMovieId(cursor.getString(Utility.COL_MOVIE_MOVIEDBID))
                             );
@@ -101,9 +100,6 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             mCurrentPos = savedInstanceState.getInt(SELECTED_KEY);
         }
-
-
-
 
         return rootView;
     }
@@ -128,25 +124,26 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        String sortOrder = Utility.getPreferedSortOrder(getContext());
-        String sortOrderSQL = Utility.getSortOrderSQL(sortOrder);
+        String sortOrderSQL = Utility.getSortOrderSQL(
+                Utility.getPreferedSortOrder(getContext()
+                ));
+
         boolean onlyFavorite = Utility.getOnlyFavoriteOption(getContext());
 
+        String selectionColumn = null;
+        String[] selectionArgs = null;
+
         if (onlyFavorite) {
-            return new CursorLoader(getActivity(),
-                    MovieContract.MovieEntry.CONTENT_URI,
-                    Utility.MOVIE_COLUMNS,
-                    MovieContract.MovieEntry.COLUMN_IS_FAVORITE + "= ?",
-                    new String[]{"1"},
-                    sortOrderSQL);
-        } else {
-            return new CursorLoader(getActivity(),
-                    MovieContract.MovieEntry.CONTENT_URI,
-                    Utility.MOVIE_COLUMNS,
-                    null,
-                    null,
-                    sortOrderSQL);
+            selectionColumn = MovieContract.MovieEntry.COLUMN_IS_FAVORITE + "= ?";
+            selectionArgs = new String[]{"1"};
         }
+
+        return new CursorLoader(getActivity(),
+                MovieContract.MovieEntry.CONTENT_URI,
+                Utility.MOVIE_COLUMNS,
+                selectionColumn,
+                selectionArgs,
+                sortOrderSQL);
     }
 
     @Override
@@ -155,7 +152,6 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         if (mCurrentPos != GridView.INVALID_POSITION) {
             mMovieGridview.smoothScrollToPosition(mCurrentPos);
         }
-
     }
 
 
@@ -169,7 +165,7 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     }
 
     public interface Callback {
-        public void onItemSelected(Uri dateUri);
+        void onItemSelected(Uri dateUri);
     }
 
 }
