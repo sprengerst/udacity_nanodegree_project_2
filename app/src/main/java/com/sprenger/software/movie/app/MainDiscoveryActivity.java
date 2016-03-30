@@ -86,7 +86,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
 
             MovieDetailFragment df = (MovieDetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
             if ( null != df ) {
-                df.onFavoriteOptionChanged();
+                df.updateLoadedEntry();
             }
 
             MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);

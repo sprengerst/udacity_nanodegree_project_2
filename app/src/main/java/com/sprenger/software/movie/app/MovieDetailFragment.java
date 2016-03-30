@@ -164,6 +164,10 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
                     getContext().getContentResolver().update(alterMovie, alteredMovieValues, MovieContract.MovieEntry._ID + "= ?", new String[]{movieId});
                     System.out.println("UPDATED ENTRIES: " + movieTitle + " : " + movieId);
+
+                    if(Utility.getOnlyFavoriteOption(getContext()) && !mMovieFavoriteButton.isSelected()){
+                        updateLoadedEntry();
+                    }
                 }
             });
 
@@ -243,37 +247,35 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    public void onFavoriteOptionChanged() {
+
+
+    public void updateLoadedEntry(){
         if (null != mUri) {
 
             Cursor topEntry;
-            if(Utility.getOnlyFavoriteOption(getContext())) {
-                topEntry = getContext().getContentResolver().query(
-                        MovieContract.MovieEntry.CONTENT_URI,
-                        null,
-                        MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " = ?",
-                        new String[]{"1"},
-                        Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
-            }else{
-                topEntry = getContext().getContentResolver().query(
-                        MovieContract.MovieEntry.CONTENT_URI,
-                        null,
-                        MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " = ?",
-                        new String[]{"0"},
-                        Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
+            String selector = null;
+            String[] selectorValues = null;
+
+            if (Utility.getOnlyFavoriteOption(getContext())) {
+                selector = MovieContract.MovieEntry.COLUMN_IS_FAVORITE + " = ?";
+                selectorValues = new String[]{"1"};
             }
 
-            System.out.println("TOPENTRY:" +DatabaseUtils.dumpCursorToString(topEntry));
+            topEntry = getContext().getContentResolver().query(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    null,
+                    selector,
+                    selectorValues,
+                    Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
 
+            System.out.println("TOPENTRY:" + DatabaseUtils.dumpCursorToString(topEntry));
 
-            if(topEntry.moveToFirst()){
-
+            if (topEntry.moveToFirst()) {
                 mUri = MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID));
                 System.out.println("URI: " + MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID)));
             }
 
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
-
         }
     }
 }
