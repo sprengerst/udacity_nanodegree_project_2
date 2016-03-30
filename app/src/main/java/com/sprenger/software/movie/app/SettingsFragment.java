@@ -18,7 +18,7 @@ public class SettingsFragment extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_general);
+        addPreferencesFromResource(R.xml.settings_activity_preferences);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sortorder_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_favorite_key)));
     }

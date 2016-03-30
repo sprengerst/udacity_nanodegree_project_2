@@ -46,7 +46,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.movie_discovery_activity_menu, menu);
         return true;
     }
 

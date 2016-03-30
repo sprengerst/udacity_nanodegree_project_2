@@ -68,7 +68,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.detailfragment, menu);
+        inflater.inflate(R.menu.movie_detail_fragment_menu, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
 
