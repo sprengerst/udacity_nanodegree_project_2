@@ -1,3 +1,6 @@
+/*
+ * Created by Stefan Sprenger
+ */
 
 package com.sprenger.software.movie.app.database;
 
@@ -5,12 +8,11 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.text.format.Time;
 
 public class MovieContract {
 
     public static final String CONTENT_AUTHORITY = "com.sprenger.software.movie.app";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_MOVIE = "movie";
 
     public static final class MovieEntry implements BaseColumns {
@@ -34,22 +36,13 @@ public class MovieContract {
         public static final String COLUMN_RELEASE_DATE = "releaseDate";
         public static final String COLUMN_IS_FAVORITE = "isFavoriteMovie";
 
-
         public static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
-
 
         public static Uri buildMovieByMovieId(String movieId) {
             return CONTENT_URI.buildUpon().appendPath(movieId).build();
         }
 
-        public static long normalizeDate(long startDate) {
-            // normalize the start date to the beginning of the (UTC) day
-            Time time = new Time();
-            time.set(startDate);
-            int julianDay = Time.getJulianDay(startDate, time.gmtoff);
-            return time.setJulianDay(julianDay);
-        }
     }
 }
