@@ -52,6 +52,8 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private TrailerGridAdapter trailerGridAdapter;
     private RecyclerView mMovieReviewRecycler;
     private ImageButton mMovieFavoriteButton;
+    private TextView mMovieReviewHeadline;
+    private TextView mMovieTrailerHeadline;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +74,9 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         movieRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_trailers);
         mMovieRatingView = (TextView) rootView.findViewById(R.id.detail_rating_textview);
         mMovieReviewRecycler = (RecyclerView) rootView.findViewById(R.id.recyclerview_reviews);
+        mMovieReviewHeadline = (TextView) rootView.findViewById(R.id.textview_review_headlines);
+        mMovieTrailerHeadline = (TextView) rootView.findViewById(R.id.textview_trailer_headlines);
+
 
         //set to invisible if there is no content
         setComponentsVisibility(View.INVISIBLE);
@@ -88,6 +93,8 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         movieRecyclerView.setVisibility(visibilityStatus);
         mMovieRatingView.setVisibility(visibilityStatus);
         mMovieReviewRecycler.setVisibility(visibilityStatus);
+        mMovieReviewHeadline.setVisibility(visibilityStatus);
+        mMovieTrailerHeadline.setVisibility(visibilityStatus);
     }
 
 

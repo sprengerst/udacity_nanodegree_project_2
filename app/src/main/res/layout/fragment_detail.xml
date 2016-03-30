@@ -6,8 +6,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:fadeScrollbars="false">
-
+    android:fadeScrollbars="false"
+    android:background="#ffffff">
 
 
 <LinearLayout
@@ -36,7 +36,7 @@
             android:id="@+id/image_view_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="1"
             android:contentDescription="Movieimage"
             android:gravity="center"
             android:padding="20dip"
@@ -47,9 +47,10 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/detail_release_date_textview"
@@ -83,28 +84,67 @@
         android:paddingLeft="6pt"
         android:paddingRight="6pt"
         android:paddingTop="5pt"
+        android:paddingBottom="5pt"
         android:scrollbars="vertical"
         android:text="blabdfkbs lfbsakld bfklabsd kbflkasdb fsd sf asdf ads fasd   asdf asdf ads fasd fasd fasd fads f"
         android:textColor="#737373"
         android:textSize="18sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#bcb5b5" />
+
+    <TextView
+        android:id="@+id/textview_trailer_headlines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+        android:layout_gravity="center"
+        android:text="Trailers" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#bcb5b5" />
 
     <view
         android:id="@+id/recyclerview_trailers"
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
         android:layout_centerInParent="true"
         android:scrollbars="horizontal"
         android:fadeScrollbars="false"/>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#bcb5b5" />
 
+    <TextView
+        android:id="@+id/textview_review_headlines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+        android:layout_gravity="center"
+        android:text="Reviews" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#bcb5b5" />
 
     <view
         android:id="@+id/recyclerview_reviews"
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:paddingTop="5dip"
         android:layout_centerInParent="true" />
 
 
