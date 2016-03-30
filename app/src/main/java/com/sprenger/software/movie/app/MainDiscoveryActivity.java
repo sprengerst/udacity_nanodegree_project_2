@@ -79,11 +79,6 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
                 ff.onSortOrderChanged();
             }
 
-            //FIXME
-//            DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-//            if ( null != df ) {
-//                df.onLocationChanged(location);
-//            }
             mSortOrder = sortOrder;
         }
 
@@ -92,6 +87,12 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
             if (null != ff) {
                 ff.onFavoriteOptionChanged();
             }
+
+            MovieDetailFragment df = (MovieDetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if ( null != df ) {
+                df.onFavoriteOptionChanged();
+            }
+
             mOnlyFavorites = onlyFavorites;
         }
     }

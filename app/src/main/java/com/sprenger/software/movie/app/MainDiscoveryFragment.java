@@ -48,6 +48,7 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onCreate(Bundle instance) {
         super.onCreate(instance);
@@ -77,9 +78,7 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         View rootView = inflater.inflate(R.layout.fragment_discovery_main, container, false);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie_images);
-        mMovieGridview = gridView;
         gridView.setAdapter(this.movieGridAdapter);
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -98,9 +97,14 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         });
 
 
+        mMovieGridview = gridView;
+
+
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             mCurrentPos = savedInstanceState.getInt(SELECTED_KEY);
         }
+
+
 
 
         return rootView;
@@ -127,15 +131,7 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String sortOrder = Utility.getPreferedSortOrder(getContext());
-
-        String sortOrderSQL;
-
-        if (sortOrder.equals("most_popular")) {
-            sortOrderSQL = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
-        } else {
-            sortOrderSQL = MovieContract.MovieEntry.COLUMN_RATING + " DESC";
-        }
-
+        String sortOrderSQL = Utility.getSortOrderSQL(sortOrder);
         boolean onlyFavorite = Utility.getOnlyFavoriteOption(getContext());
 
         if (onlyFavorite) {
@@ -161,7 +157,9 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
         if (mCurrentPos != GridView.INVALID_POSITION) {
             mMovieGridview.smoothScrollToPosition(mCurrentPos);
         }
+
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -169,12 +167,10 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     }
 
     void onSortOrderChanged() {
-        System.out.println("SORTORDERCHANGED");
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 
     void onFavoriteOptionChanged() {
-        System.out.println("FAVORITE SHOW CHANGED");
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 

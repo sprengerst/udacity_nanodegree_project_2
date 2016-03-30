@@ -145,6 +145,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
                     MovieContract.MovieEntry.COLUMN_ID + "= ?",
                     new String[]{movieId},
                     null);
+
             if(alreadyExist != null && alreadyExist.getColumnCount()!=0 && alreadyExist.moveToFirst()){
                 System.out.println("CURSOR: " + DatabaseUtils.dumpCursorToString(alreadyExist));
                 isFavorite = alreadyExist.getInt(0);

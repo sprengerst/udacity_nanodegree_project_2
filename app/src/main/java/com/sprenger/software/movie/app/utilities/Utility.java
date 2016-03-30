@@ -78,4 +78,11 @@ public class Utility {
         Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
     }
 
+    public static String getSortOrderSQL(String sortOrder) {
+        if (sortOrder.equals("most_popular")) {
+            return MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+        } else {
+            return MovieContract.MovieEntry.COLUMN_RATING + " DESC";
+        }
+    }
 }
