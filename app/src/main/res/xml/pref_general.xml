@@ -16,5 +16,10 @@
         android:entryValues="@array/pref_sortorder_keystore"
         android:defaultValue="most_popular"
     />
+    <CheckBoxPreference
+        android:key="@string/pref_favorite_key"
+        android:title="Only show favorites"
+        android:summary=""
+        android:defaultValue="false"/>
 
 </PreferenceScreen>

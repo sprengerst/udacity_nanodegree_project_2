@@ -20,6 +20,13 @@ public class Utility {
         return sortOrder;
     }
 
+    public static boolean getOnlyFavoriteOption(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean onlyFavorite = prefs.getBoolean(context.getString(R.string.pref_favorite_key), false);
+        return onlyFavorite;
+    }
+
+
     public static final String[] MOVIE_COLUMNS = {
             MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID,
             MovieContract.MovieEntry.COLUMN_TITLE,

@@ -15,12 +15,14 @@ import android.view.MenuItem;
 public class MainDiscoveryActivity extends AppCompatActivity implements MainDiscoveryFragment.Callback {
 
     private String mSortOrder;
+    private boolean mOnlyFavorites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mSortOrder = Utility.getPreferedSortOrder(this);
+        mOnlyFavorites = Utility.getOnlyFavoriteOption(this);
 
         setContentView(R.layout.activity_main);
 //        if (savedInstanceState == null) {
@@ -57,6 +59,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
     protected void onResume() {
         super.onResume();
         String sortOrder = Utility.getPreferedSortOrder(this);
+        boolean onlyFavorites = Utility.getOnlyFavoriteOption(this);
         // update the location in our second pane using the fragment manager
         if (sortOrder != null && !sortOrder.equals(mSortOrder)) {
             MainDiscoveryFragment ff = (MainDiscoveryFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
@@ -69,6 +72,14 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
 //                df.onLocationChanged(location);
 //            }
             mSortOrder = sortOrder;
+        }
+
+        if (onlyFavorites != mOnlyFavorites){
+            MainDiscoveryFragment ff = (MainDiscoveryFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
+            if ( null != ff ) {
+                ff.onFavoriteOptionChanged();
+            }
+            mOnlyFavorites = onlyFavorites;
         }
     }
 

@@ -13,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +21,7 @@ import android.widget.GridView;
 
 import com.sprenger.software.movie.app.data.MovieContract;
 
-public class MainDiscoveryFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainDiscoveryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private MovieGridAdapter movieGridAdapter;
     private static final int CURSOR_LOADER_ID = 0;
@@ -28,6 +29,18 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     private int mCurrentPos;
 
     public MainDiscoveryFragment() {
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_refetch) {
+            updateMovieGrid();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -41,7 +54,7 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
             FetchMovieDataTask fetchMovieTask = new FetchMovieDataTask(this);
             fetchMovieTask.execute();
         } catch (Exception e) {
-            Log.e("Sync Error",e.toString());
+            Log.e("Sync Error", e.toString());
             e.printStackTrace();
         }
     }
@@ -49,8 +62,6 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // FIXME
-        updateMovieGrid();
 
         this.movieGridAdapter = new MovieGridAdapter(getActivity(), null, 0);
 
@@ -69,7 +80,7 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
                 if (cursor != null) {
                     String sortOrder = Utility.getPreferedSortOrder(getActivity());
 
-                    System.out.println("CURSOR ID: "+cursor.getString(Utility.COL_MOVIE_MOVIEID));
+                    System.out.println("CURSOR ID: " + cursor.getString(Utility.COL_MOVIE_MOVIEID));
                     ((Callback) getActivity())
                             .onItemSelected(MovieContract.MovieEntry.buildMovieByMovieId(cursor.getString(Utility.COL_MOVIE_MOVIEID))
                             );
@@ -83,7 +94,6 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     }
 
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
@@ -91,41 +101,60 @@ public class MainDiscoveryFragment extends Fragment  implements LoaderManager.Lo
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args){
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String sortOrder = Utility.getPreferedSortOrder(getContext());
+
         String sortOrderSQL;
 
-        if(sortOrder.equals("most_popular")){
+        if (sortOrder.equals("most_popular")) {
             sortOrderSQL = MovieContract.MovieEntry.COLUMN_POPULARITY + " DESC";
-        }else{
-            sortOrderSQL = MovieContract.MovieEntry.COLUMN_RATING+ " DESC";
+        } else {
+            sortOrderSQL = MovieContract.MovieEntry.COLUMN_RATING + " DESC";
         }
 
+        boolean onlyFavorite = Utility.getOnlyFavoriteOption(getContext());
 
-        return new CursorLoader(getActivity(),
-                MovieContract.MovieEntry.CONTENT_URI,
-                Utility.MOVIE_COLUMNS,
-                null,
-                null,
-                sortOrderSQL);
+        if (onlyFavorite) {
+            return new CursorLoader(getActivity(),
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    Utility.MOVIE_COLUMNS,
+                    MovieContract.MovieEntry.COLUMN_IS_FAVORITE + "= ?",
+                    new String[]{"1"},
+                    sortOrderSQL);
+        } else {
+            return new CursorLoader(getActivity(),
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    Utility.MOVIE_COLUMNS,
+                    null,
+                    null,
+                    sortOrderSQL);
+        }
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data){
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         movieGridAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader){
+    public void onLoaderReset(Loader<Cursor> loader) {
         movieGridAdapter.swapCursor(null);
     }
 
     // since we read the location when we create the loader, all we need to do is restart things
-    void onSortOrderChanged( ) {
+    void onSortOrderChanged() {
 
         System.out.println("SORTORDERCHANGED");
-        updateMovieGrid();
+        //updateMovieGrid();
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+    void onFavoriteOptionChanged() {
+
+        System.out.println("SORTORDERCHANGED");
+        //updateMovieGrid();
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 

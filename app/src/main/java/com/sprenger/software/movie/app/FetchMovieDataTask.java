@@ -137,9 +137,14 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
 
             int isFavorite = 0;
-            Cursor alreadyExist = mainDiscoveryFragment.getContext().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{MovieContract.MovieEntry.COLUMN_IS_FAVORITE},MovieContract.MovieEntry.COLUMN_ID+"= ?",new String[]{movieId},null);
+            Cursor alreadyExist = mainDiscoveryFragment.getContext().getContentResolver().query(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    new String[]{MovieContract.MovieEntry.COLUMN_IS_FAVORITE},
+                    MovieContract.MovieEntry.COLUMN_ID + "= ?",
+                    new String[]{movieId},
+                    null);
             if(alreadyExist != null && alreadyExist.getColumnCount()!=0 && alreadyExist.moveToFirst()){
-                System.out.println("CURSOR: "+DatabaseUtils.dumpCursorToString(alreadyExist));
+                System.out.println("CURSOR: " + DatabaseUtils.dumpCursorToString(alreadyExist));
                 isFavorite = alreadyExist.getInt(0);
             }
 
