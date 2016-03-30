@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -54,7 +55,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mMovieReleaseDateView;
     private RecyclerView movieRecyclerView;
     private TextView mMovieRatingView;
-    private TrailerGridAdapter trailerGridAdapter;
     private RecyclerView mMovieReviewRecycler;
     private ImageButton mMovieFavoriteButton;
     private TextView mMovieReviewHeadline;
@@ -62,7 +62,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private ShareActionProvider mShareActionProvider;
     private String mFirstTrailerYTID;
 
-    public MovieDetailFragment(){
+    public MovieDetailFragment() {
         setHasOptionsMenu(true);
     }
 
@@ -131,9 +131,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (null != mUri) {
-
-            // Now create and return a CursorLoader that will take care of
-            // creating a Cursor for the data being displayed.
             return new CursorLoader(
                     getActivity(),
                     mUri,
@@ -150,6 +147,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(final Loader<Cursor> loader, final Cursor data) {
         if (data != null && data.moveToFirst()) {
 
+            // content fills the components now
             setComponentsVisibility(View.VISIBLE);
 
             final String movieId = data.getString(Utility.COL_MOVIE_ID);
@@ -171,10 +169,11 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             mMovieTitleView.setText(movieTitle);
             mMovieSynopsisView.setText(movieSynopsis);
             mMovieSynopsisView.setMovementMethod(new ScrollingMovementMethod());
-            mMovieReleaseDateView.setText("RELEASE: " + movieReleaseDate);
-            mMovieRatingView.setText("RATING: " + movieRating + "/10");
 
-            mMovieFavoriteButton.setSelected(data.getInt(Utility.COL_MOVIE_ISFAVORITE) == 1 ? true : false);
+            mMovieReleaseDateView.setText(String.format(getString(R.string.release_text), movieReleaseDate));
+            mMovieRatingView.setText(String.format(getString(R.string.rating_text),movieRating));
+
+            mMovieFavoriteButton.setSelected(data.getInt(Utility.COL_MOVIE_ISFAVORITE) == 1);
             mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,9 +191,8 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                     alteredMovieValues.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, mMovieFavoriteButton.isSelected() ? 1 : 0);
 
                     getContext().getContentResolver().update(alterMovie, alteredMovieValues, MovieContract.MovieEntry._ID + "= ?", new String[]{movieId});
-                    System.out.println("UPDATED ENTRIES: " + movieTitle + " : " + movieId);
 
-                    if(Utility.getOnlyFavoriteOption(getContext()) && !mMovieFavoriteButton.isSelected()){
+                    if (Utility.getOnlyFavoriteOption(getContext()) && !mMovieFavoriteButton.isSelected()) {
                         updateLoadedEntry();
                     }
                 }
@@ -209,14 +207,13 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                 try {
                     trailerList = fetchTrailerDataTask.execute(mMovieDBID).get();
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
 
                 ArrayList<String> trailerNameIncremental = new ArrayList<>();
 
+                TrailerGridAdapter trailerGridAdapter;
                 if (trailerList != null) {
                     for (int i = 0; i < trailerList.size(); i++) {
                         trailerNameIncremental.add("Trailer " + (i + 1));
@@ -239,16 +236,16 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                 try {
                     reviewSpecs = fetchReviewDataTask.execute(mMovieDBID).get();
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
 
 
-                mFirstTrailerYTID = trailerList.get(0);
-                if (mShareActionProvider != null) {
-                    mShareActionProvider.setShareIntent(createShareTrailerIntent());
+                if(trailerList != null && trailerList.size()>0) {
+                    mFirstTrailerYTID = trailerList.get(0);
+                    if (mShareActionProvider != null) {
+                        mShareActionProvider.setShareIntent(createShareTrailerIntent());
+                    }
                 }
 
                 ArrayList<ParentObject> parentObjects = new ArrayList<>();
@@ -271,8 +268,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                 verticalManager.setAutoMeasureEnabled(true);
                 mMovieReviewRecycler.setLayoutManager(verticalManager);
 
-
-
             } else {
                 Utility.showToast("To enable movie trailers/reviews check your network connection", getContext());
             }
@@ -284,9 +279,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-
-
-    public void updateLoadedEntry(){
+    public void updateLoadedEntry() {
         if (null != mUri) {
 
             Cursor topEntry;
@@ -305,9 +298,11 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                     selectorValues,
                     Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
 
-            if (topEntry.moveToFirst()) {
+            if (topEntry != null && topEntry.moveToFirst()) {
                 mUri = MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID));
+                topEntry.close();
             }
+
 
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
@@ -315,9 +310,15 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
     private Intent createShareTrailerIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        }else{
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v="+mFirstTrailerYTID);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=" + mFirstTrailerYTID);
         return shareIntent;
     }
 }
