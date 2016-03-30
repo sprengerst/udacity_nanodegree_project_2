@@ -4,8 +4,8 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_grid"
-    android:name="com.sprenger.software.movie.app.MainDiscoveryFragment"
+    android:name="com.sprenger.software.movie.app.MovieDiscoveryFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sprenger.software.movie.app.MainDiscoveryFragment"
+    tools:context=".MovieDiscoveryFragment"
     tools:layout="@android:layout/list_content" />

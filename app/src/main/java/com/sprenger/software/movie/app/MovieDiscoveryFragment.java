@@ -24,7 +24,7 @@ import com.sprenger.software.movie.app.database.MovieContract;
 import com.sprenger.software.movie.app.download.FetchMovieDataTask;
 import com.sprenger.software.movie.app.utilities.Utility;
 
-public class MainDiscoveryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MovieDiscoveryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private MovieGridAdapter movieGridAdapter;
     private static final int CURSOR_LOADER_ID = 0;
@@ -33,7 +33,7 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
     private static final String SELECTED_KEY = "selected_position";
     private GridView mMovieGridview;
 
-    public MainDiscoveryFragment() {
+    public MovieDiscoveryFragment() {
     }
 
     @Override

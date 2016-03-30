@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sprenger.software.movie.app.MainDiscoveryFragment;
+import com.sprenger.software.movie.app.MovieDiscoveryFragment;
 import com.sprenger.software.movie.app.R;
 import com.sprenger.software.movie.app.database.MovieContract;
 
@@ -33,11 +33,11 @@ import java.util.Vector;
 
 public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
 
-    private final MainDiscoveryFragment mainDiscoveryFragment;
+    private final MovieDiscoveryFragment movieDiscoveryFragment;
     private final String LOG_TAG = FetchMovieDataTask.class.getSimpleName();
 
-    public FetchMovieDataTask(MainDiscoveryFragment mainDiscoveryFragment) {
-        this.mainDiscoveryFragment = mainDiscoveryFragment;
+    public FetchMovieDataTask(MovieDiscoveryFragment movieDiscoveryFragment) {
+        this.movieDiscoveryFragment = movieDiscoveryFragment;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
                     .appendPath("movie")
                     .appendPath("top_rated")
                     .appendQueryParameter("page", "1")
-                    .appendQueryParameter("api_key", mainDiscoveryFragment.getString(R.string.tmdb_api_key));
+                    .appendQueryParameter("api_key", movieDiscoveryFragment.getString(R.string.tmdb_api_key));
 
             URL url = new URL(builder.build().toString());
 
@@ -133,13 +133,13 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
             String movieId = singleMovieJSON.getString(ID);
             String movieTitle = singleMovieJSON.getString(TITLE);
             String movieSynopsis = singleMovieJSON.getString(SYNOPSIS);
-            String moviePoster = mainDiscoveryFragment.getString(R.string.tmdb_image_link)+singleMovieJSON.getString(POSTER);
+            String moviePoster = movieDiscoveryFragment.getString(R.string.tmdb_image_link)+singleMovieJSON.getString(POSTER);
             double movieRating = Double.parseDouble(singleMovieJSON.getString(RATING));
             String movieReleaseDate = extractReleaseYear(singleMovieJSON.getString(RELEASEDATE));
             double moviePopularity = Double.parseDouble(singleMovieJSON.getString(POPULARITY));
 
             int isFavorite = 0;
-            Cursor alreadyExist = mainDiscoveryFragment.getContext().getContentResolver().query(
+            Cursor alreadyExist = movieDiscoveryFragment.getContext().getContentResolver().query(
                     MovieContract.MovieEntry.CONTENT_URI,
                     new String[]{MovieContract.MovieEntry.COLUMN_IS_FAVORITE},
                     MovieContract.MovieEntry.COLUMN_MOVIEDBID + "= ?",
@@ -168,7 +168,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
         if ( cVVector.size() > 0 ) {
             ContentValues[] cvArray = new ContentValues[cVVector.size()];
             cVVector.toArray(cvArray);
-            inserted = mainDiscoveryFragment.getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
+            inserted = movieDiscoveryFragment.getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
         }
 
         Log.d(LOG_TAG, "FetchMovieTask Complete. " + inserted + " Inserted");

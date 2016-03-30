@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import com.sprenger.software.movie.app.utilities.Utility;
 
 
-public class MainDiscoveryActivity extends AppCompatActivity implements MainDiscoveryFragment.Callback {
+public class MovieDiscoveryActivity extends AppCompatActivity implements MovieDiscoveryFragment.Callback {
 
     private String mSortOrder;
     private boolean mOnlyFavorites;
@@ -77,7 +77,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
 
             mOnlyFavorites = onlyFavorites;
 
-            MainDiscoveryFragment ff = (MainDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
+            MovieDiscoveryFragment ff = (MovieDiscoveryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
             if (null != ff) {
                 ff.onSortOrderChanged();
             }
