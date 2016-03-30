@@ -1,7 +1,0 @@
-exchange everything with RecyclerView
-
-add favorite button & favorite sort order
-
-performance
-
-refactor
