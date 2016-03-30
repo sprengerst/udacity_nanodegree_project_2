@@ -8,5 +8,5 @@
     android:id="@+id/movie_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MovieDetailActivity"
+    tools:context="com.sprenger.software.movie.app.MovieDetailActivity"
     tools:ignore="MergeRootFrame" />

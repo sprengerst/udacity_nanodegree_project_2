@@ -5,18 +5,23 @@
 package com.sprenger.software.movie.app;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -54,6 +59,25 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private ImageButton mMovieFavoriteButton;
     private TextView mMovieReviewHeadline;
     private TextView mMovieTrailerHeadline;
+    private ShareActionProvider mShareActionProvider;
+    private String mFirstTrailerYTID;
+
+    public MovieDetailFragment(){
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detailfragment, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        if (mFirstTrailerYTID != null) {
+            mShareActionProvider.setShareIntent(createShareTrailerIntent());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,8 +174,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             mMovieReleaseDateView.setText("RELEASE: " + movieReleaseDate);
             mMovieRatingView.setText("RATING: " + movieRating + "/10");
 
-
-
             mMovieFavoriteButton.setSelected(data.getInt(Utility.COL_MOVIE_ISFAVORITE) == 1 ? true : false);
             mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -223,6 +245,12 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                     e.printStackTrace();
                 }
 
+
+                mFirstTrailerYTID = trailerList.get(0);
+                if (mShareActionProvider != null) {
+                    mShareActionProvider.setShareIntent(createShareTrailerIntent());
+                }
+
                 ArrayList<ParentObject> parentObjects = new ArrayList<>();
                 for (ReviewSpec reviewSpec : reviewSpecs) {
                     ArrayList<Object> childList = new ArrayList<>();
@@ -242,6 +270,8 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
 
                 verticalManager.setAutoMeasureEnabled(true);
                 mMovieReviewRecycler.setLayoutManager(verticalManager);
+
+
 
             } else {
                 Utility.showToast("To enable movie trailers/reviews check your network connection", getContext());
@@ -275,14 +305,19 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
                     selectorValues,
                     Utility.getSortOrderSQL(Utility.getPreferedSortOrder(getContext())));
 
-            System.out.println("TOPENTRY:" + DatabaseUtils.dumpCursorToString(topEntry));
-
             if (topEntry.moveToFirst()) {
                 mUri = MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID));
-                System.out.println("URI: " + MovieContract.MovieEntry.buildMovieByMovieId(topEntry.getString(Utility.COL_MOVIE_MOVIEDBID)));
             }
 
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
+    }
+
+    private Intent createShareTrailerIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v="+mFirstTrailerYTID);
+        return shareIntent;
     }
 }

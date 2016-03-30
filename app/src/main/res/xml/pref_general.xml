@@ -18,7 +18,7 @@
     />
     <CheckBoxPreference
         android:key="@string/pref_favorite_key"
-        android:title="Only show favorites"
+        android:title="Only show favorites -> "
         android:summary=""
         android:defaultValue="false"/>
 
