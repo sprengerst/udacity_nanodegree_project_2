@@ -1,4 +1,4 @@
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.configuration;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 

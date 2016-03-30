@@ -1,4 +1,4 @@
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.utilities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -7,7 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
-import com.sprenger.software.movie.app.data.MovieContract;
+import com.sprenger.software.movie.app.R;
+import com.sprenger.software.movie.app.database.MovieContract;
 
 /**
  * Created by stefa on 24.03.2016.
@@ -42,15 +43,15 @@ public class Utility {
 
     // These indices are tied to MOVIE_COLUMNS.  If MOVIE_COLUMNS changes, these
     // must change.
-    static final int COL_MOVIE_ID = 0;
-    static final int COL_MOVIE_TITLE = 1;
-    static final int COL_MOVIE_SYNOPSIS = 2;
-    static final int COL_MOVIE_POSTER_PATH = 3;
-    static final int COL_MOVIE_RELEASE_DATE = 4;
-    static final int COL_MOVIE_POPUlARITY = 5;
-    static final int COL_MOVIE_RATING = 6;
-    static final int COL_MOVIE_MOVIEID = 7;
-    static final int COL_MOVIE_ISFAVORITE = 8;
+    public static final int COL_MOVIE_ID = 0;
+    public  static final int COL_MOVIE_TITLE = 1;
+    public static final int COL_MOVIE_SYNOPSIS = 2;
+    public static final int COL_MOVIE_POSTER_PATH = 3;
+    public static final int COL_MOVIE_RELEASE_DATE = 4;
+    public static final int COL_MOVIE_POPUlARITY = 5;
+    public static final int COL_MOVIE_RATING = 6;
+    public static final int COL_MOVIE_MOVIEID = 7;
+    public static final int COL_MOVIE_ISFAVORITE = 8;
 
 
     public static void watchYoutubeVideo(String id,Context context){

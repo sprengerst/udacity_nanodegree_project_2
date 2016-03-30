@@ -2,7 +2,7 @@
  * Created by Stefan Sprenger
  */
 
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.download;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -11,7 +11,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sprenger.software.movie.app.data.MovieContract;
+import com.sprenger.software.movie.app.MainDiscoveryFragment;
+import com.sprenger.software.movie.app.R;
+import com.sprenger.software.movie.app.database.MovieContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +31,7 @@ import java.util.Date;
 import java.util.Vector;
 
 
-class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
+public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
 
     private final MainDiscoveryFragment mainDiscoveryFragment;
     private final String LOG_TAG = FetchMovieDataTask.class.getSimpleName();

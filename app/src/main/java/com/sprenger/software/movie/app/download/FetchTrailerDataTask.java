@@ -2,12 +2,14 @@
  * Created by Stefan Sprenger
  */
 
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.download;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.sprenger.software.movie.app.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,17 +25,17 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 
-class FetchReviewDataTask extends AsyncTask<String, Void, ArrayList<ReviewSpec>> {
+public class FetchTrailerDataTask extends AsyncTask<String, Void, ArrayList<String>> {
 
     private final Context context;
-    private final String LOG_TAG = FetchReviewDataTask.class.getSimpleName();
+    private final String LOG_TAG = FetchTrailerDataTask.class.getSimpleName();
 
-    public FetchReviewDataTask(Context context) {
+    public FetchTrailerDataTask(Context context) {
         this.context = context;
     }
 
     @Override
-    protected ArrayList<ReviewSpec> doInBackground(String... strings) {
+    protected ArrayList<String> doInBackground(String... strings) {
 
         String movieId = strings[0];
 
@@ -49,7 +51,7 @@ class FetchReviewDataTask extends AsyncTask<String, Void, ArrayList<ReviewSpec>>
                     .appendPath("3")
                     .appendPath("movie")
                     .appendPath(movieId)
-                    .appendPath("reviews")
+                    .appendPath("videos")
                     .appendQueryParameter("api_key", context.getString(R.string.tmdb_api_key));
 
             URL url = new URL(builder.build().toString());
@@ -101,28 +103,30 @@ class FetchReviewDataTask extends AsyncTask<String, Void, ArrayList<ReviewSpec>>
 
     }
 
-    private ArrayList<ReviewSpec> getTrailerArrayFromJson(String forecastJsonStr)
+    private ArrayList<String> getTrailerArrayFromJson(String forecastJsonStr)
             throws JSONException, ParseException {
 
-        final String REVIEW_LIST = "results";
-        final String AUTHOR = "author";
-        final String CONTENT = "content";
+        final String TRAILER_LIST = "results";
+        final String YOUTUBEID = "key";
+        final String VERIFICATIONSTRING = "site";
 
         JSONObject pageJSON = new JSONObject(forecastJsonStr);
-        JSONArray movieArray = pageJSON.getJSONArray(REVIEW_LIST);
+        JSONArray movieArray = pageJSON.getJSONArray(TRAILER_LIST);
 
-        ArrayList<ReviewSpec> reviewList = new ArrayList<>();
+        ArrayList<String> trailerList = new ArrayList<>();
         for (int i = 0; i < movieArray.length(); i++) {
 
             JSONObject singleMovieJSON = movieArray.getJSONObject(i);
 
-            String author = singleMovieJSON.getString(AUTHOR);
-            String content = singleMovieJSON.getString(CONTENT);
+            String youtubeId = singleMovieJSON.getString(YOUTUBEID);
+            String verification = singleMovieJSON.getString(VERIFICATIONSTRING);
 
-            reviewList.add(new ReviewSpec(author,content));
+            if(verification.equals("YouTube")){
+                trailerList.add(youtubeId);
+            }
         }
 
-        return reviewList;
+        return trailerList;
 
     }
 }

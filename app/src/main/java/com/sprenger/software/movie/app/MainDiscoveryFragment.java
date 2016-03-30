@@ -19,7 +19,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.sprenger.software.movie.app.data.MovieContract;
+import com.sprenger.software.movie.app.configuration.MovieGridAdapter;
+import com.sprenger.software.movie.app.database.MovieContract;
+import com.sprenger.software.movie.app.download.FetchMovieDataTask;
+import com.sprenger.software.movie.app.utilities.Utility;
 
 public class MainDiscoveryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 

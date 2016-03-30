@@ -1,9 +1,10 @@
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.configuration;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.sprenger.software.movie.app.R;
 
 public class ReviewChildViewHolder extends ChildViewHolder {
 

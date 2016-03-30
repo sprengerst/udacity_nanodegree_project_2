@@ -1,4 +1,4 @@
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.configuration;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sprenger.software.movie.app.R;
+import com.sprenger.software.movie.app.utilities.Utility;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -73,7 +75,7 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
         public void onClick(View view) {
             CustomViewHolder holder = (CustomViewHolder) view.getTag();
             int position = holder.getPosition();
-            Utility.watchYoutubeVideo(trailerLinkList.get(position),mContext);
+            Utility.watchYoutubeVideo(trailerLinkList.get(position), mContext);
         }
     };
 }

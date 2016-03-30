@@ -42,7 +42,7 @@
 
         <provider
             android:authorities="com.sprenger.software.movie.app"
-            android:name=".data.MovieProvider" />
+            android:name=".database.MovieProvider" />
     </application>
 
 </manifest>

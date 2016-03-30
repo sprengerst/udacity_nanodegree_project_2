@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.sprenger.software.movie.app.utilities.Utility;
+
 
 public class MainDiscoveryActivity extends AppCompatActivity implements MainDiscoveryFragment.Callback {
 

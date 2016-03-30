@@ -1,5 +1,5 @@
 
-package com.sprenger.software.movie.app.data;
+package com.sprenger.software.movie.app.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

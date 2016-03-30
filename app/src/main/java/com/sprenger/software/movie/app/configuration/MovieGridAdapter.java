@@ -2,7 +2,7 @@
  * Created by Stefan Sprenger
  */
 
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.configuration;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.sprenger.software.movie.app.R;
+import com.sprenger.software.movie.app.utilities.Utility;
 import com.squareup.picasso.Picasso;
 
-class MovieGridAdapter extends CursorAdapter {
+public class MovieGridAdapter extends CursorAdapter {
 
     public MovieGridAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);

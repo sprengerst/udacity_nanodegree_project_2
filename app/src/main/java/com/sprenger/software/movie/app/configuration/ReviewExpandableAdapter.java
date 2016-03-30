@@ -1,4 +1,4 @@
-package com.sprenger.software.movie.app;
+package com.sprenger.software.movie.app.configuration;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.sprenger.software.movie.app.R;
 
 import java.util.List;
 

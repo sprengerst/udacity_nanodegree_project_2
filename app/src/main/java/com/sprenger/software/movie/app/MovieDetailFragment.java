@@ -23,7 +23,13 @@ import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
-import com.sprenger.software.movie.app.data.MovieContract;
+import com.sprenger.software.movie.app.configuration.ReviewExpandableAdapter;
+import com.sprenger.software.movie.app.configuration.ReviewSpec;
+import com.sprenger.software.movie.app.configuration.TrailerGridAdapter;
+import com.sprenger.software.movie.app.database.MovieContract;
+import com.sprenger.software.movie.app.download.FetchReviewDataTask;
+import com.sprenger.software.movie.app.download.FetchTrailerDataTask;
+import com.sprenger.software.movie.app.utilities.Utility;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

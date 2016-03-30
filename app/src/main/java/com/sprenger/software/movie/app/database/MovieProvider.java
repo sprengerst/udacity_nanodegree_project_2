@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sprenger.software.movie.app.data;
+package com.sprenger.software.movie.app.database;
 
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
