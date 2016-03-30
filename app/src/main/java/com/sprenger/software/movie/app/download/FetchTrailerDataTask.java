@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 
@@ -104,7 +103,7 @@ public class FetchTrailerDataTask extends AsyncTask<String, Void, ArrayList<Stri
     }
 
     private ArrayList<String> getTrailerArrayFromJson(String forecastJsonStr)
-            throws JSONException, ParseException {
+            throws JSONException {
 
         final String TRAILER_LIST = "results";
         final String YOUTUBEID = "key";

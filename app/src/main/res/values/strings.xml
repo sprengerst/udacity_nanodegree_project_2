@@ -15,4 +15,19 @@
     <string name="rating_text">Rating: %1$s/10</string>
     <string name="pref_favorite_key">pref_favorite</string>
     <string name="action_refetch" translatable="false">Reload</string>
+    <string name="share_title">SHARE</string>
+
+    <string name="textview_trailer_headlines_text">Trailers</string>
+    <string name="textview_review_headlines_text">Reviews</string>
+
+    <string name="movie_title_textview_demo">Titel</string>
+    <string name="list_item_review_text_demo">This is the demo review \n\n over multiple lines very long here</string>
+    <string name="list_item_review_author_demo">Author Name</string>
+    <string name="list_item_trailer_text_demo">Trailer1</string>
+    <string name="image_view_detail_contentdesc">Here is the movie image</string>
+    <string name="detail_release_date_textview_demo">2015</string>
+    <string name="detail_rating_textview_demo">9.1/10</string>
+    <string name="synopsis_text_detail_demo">blabdfkbs lfbsakld bfklabsd kbflkasdb fsd sf asdf ads fasd asdf asdf ads fasd fasd fasd fads f</string>
+
+
 </resources>

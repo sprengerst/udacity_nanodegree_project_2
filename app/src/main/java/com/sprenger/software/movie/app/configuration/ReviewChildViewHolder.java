@@ -12,7 +12,7 @@ import com.sprenger.software.movie.app.R;
 
 public class ReviewChildViewHolder extends ChildViewHolder {
 
-    public TextView reviewTextView;
+    public final TextView reviewTextView;
 
     public ReviewChildViewHolder(View itemView) {
         super(itemView);

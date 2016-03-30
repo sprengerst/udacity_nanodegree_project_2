@@ -86,7 +86,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         Bundle arguments = getArguments();
         if (arguments != null) {
             mUri = arguments.getParcelable(DETAIL_URI);
-            System.out.println("DETAIL RECEIVED URI: " + mUri);
         }
 
         View rootView = inflater.inflate(R.layout.movie_detail_fragment, container, false);

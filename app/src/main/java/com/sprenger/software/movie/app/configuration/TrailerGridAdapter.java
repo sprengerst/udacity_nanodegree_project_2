@@ -20,9 +20,9 @@ import java.util.List;
 
 public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.CustomViewHolder> {
 
-    private List<String> trailerItemList;
-    private List<String> trailerLinkList;
-    private Context mContext;
+    private final List<String> trailerItemList;
+    private final List<String> trailerLinkList;
+    private final Context mContext;
 
     public TrailerGridAdapter(Context context, List<String> trailerItemList,List<String> trailerLinkList) {
         this.trailerItemList = trailerItemList;
@@ -33,8 +33,7 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_trailer_grid_element, null);
-        CustomViewHolder viewHolder = new CustomViewHolder(view);
-        return viewHolder;
+        return new CustomViewHolder(view);
     }
 
     @Override
@@ -60,8 +59,8 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView imageView;
-        protected TextView textView;
+        final ImageView imageView;
+        final TextView textView;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -71,7 +70,7 @@ public class TrailerGridAdapter extends RecyclerView.Adapter<TrailerGridAdapter.
     }
 
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    private final View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             CustomViewHolder holder = (CustomViewHolder) view.getTag();

@@ -25,8 +25,8 @@ public class ReviewSpec implements ParentObject {
         return review;
     }
 
-    private String autor;
-    private String review;
+    private final String autor;
+    private final String review;
 
     @Override
     public List<Object> getChildObjectList() {

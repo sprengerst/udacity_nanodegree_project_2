@@ -6,7 +6,6 @@ package com.sprenger.software.movie.app.download;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -106,11 +105,8 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
 
     }
 
-
     private void getMovieDataFromJson(String forecastJsonStr)
             throws JSONException, ParseException {
-
-        System.out.println("FETCHDATA");
 
         final String FILM_LIST = "results";
         final String ID = "id";
@@ -147,8 +143,9 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Void> {
                     null);
 
             if(alreadyExist != null && alreadyExist.getColumnCount()!=0 && alreadyExist.moveToFirst()){
-                System.out.println("CURSOR: " + DatabaseUtils.dumpCursorToString(alreadyExist));
+                //System.out.println("CURSOR: " + DatabaseUtils.dumpCursorToString(alreadyExist));
                 isFavorite = alreadyExist.getInt(0);
+                alreadyExist.close();
             }
 
             ContentValues movieValues = new ContentValues();

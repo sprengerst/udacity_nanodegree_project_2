@@ -12,13 +12,12 @@
         android:id="@+id/list_item_trailer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trailer1" />
+        android:text="@string/list_item_trailer_text_demo" />
 
     <ImageView
         android:id="@+id/list_item_trailer_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher"/>

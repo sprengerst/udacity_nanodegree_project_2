@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Author Name"
+        android:text="@string/list_item_review_author_demo"
         android:textStyle="bold" />
 
     <ImageButton

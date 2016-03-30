@@ -22,7 +22,7 @@
         android:background="#029789"
         android:gravity="center"
         android:padding="18dip"
-        android:text="Titel"
+        android:text="@string/movie_title_textview_demo"
         android:textColor="#ffffff"
         android:textSize="25sp" />
 
@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:contentDescription="Movieimage"
+            android:contentDescription="@string/image_view_detail_contentdesc"
             android:gravity="center"
             android:padding="20dip"
             android:textColor="#000000"
@@ -56,13 +56,13 @@
                 android:id="@+id/detail_release_date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2015" />
+                android:text="@string/detail_release_date_textview_demo" />
 
             <TextView
                 android:id="@+id/detail_rating_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9.1/10" />
+                android:text="@string/detail_rating_textview_demo" />
 
 
             <ImageButton
@@ -86,7 +86,7 @@
         android:paddingTop="5pt"
         android:paddingBottom="5pt"
         android:scrollbars="vertical"
-        android:text="blabdfkbs lfbsakld bfklabsd kbflkasdb fsd sf asdf ads fasd   asdf asdf ads fasd fasd fasd fads f"
+        android:text="@string/synopsis_text_detail_demo"
         android:textColor="#737373"
         android:textSize="18sp" />
 
@@ -102,7 +102,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         android:layout_gravity="center"
-        android:text="Trailers" />
+        android:text="@string/textview_trailer_headlines_text" />
 
     <View
         android:layout_width="fill_parent"
@@ -116,7 +116,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
-        android:layout_centerInParent="true"
         android:scrollbars="horizontal"
         android:fadeScrollbars="false"/>
 
@@ -132,7 +131,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         android:layout_gravity="center"
-        android:text="Reviews" />
+        android:text="@string/textview_review_headlines_text" />
 
     <View
         android:layout_width="fill_parent"
@@ -144,8 +143,7 @@
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dip"
-        android:layout_centerInParent="true" />
+        android:paddingTop="5dip" />
 
 
 </LinearLayout>

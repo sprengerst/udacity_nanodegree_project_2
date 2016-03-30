@@ -73,7 +73,7 @@ public class MovieDiscoveryFragment extends Fragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        this.movieGridAdapter = new MovieGridAdapter(getActivity(), null, 0);
+        this.movieGridAdapter = new MovieGridAdapter(getActivity());
 
         View rootView = inflater.inflate(R.layout.movie_discovery_fragment, container, false);
 

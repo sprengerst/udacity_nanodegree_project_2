@@ -18,8 +18,8 @@ import com.squareup.picasso.Picasso;
 
 public class MovieGridAdapter extends CursorAdapter {
 
-    public MovieGridAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public MovieGridAdapter(Context context) {
+        super(context, null, 0);
     }
 
     @Override

@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 
@@ -105,7 +104,7 @@ public class FetchReviewDataTask extends AsyncTask<String, Void, ArrayList<Revie
     }
 
     private ArrayList<ReviewSpec> getTrailerArrayFromJson(String forecastJsonStr)
-            throws JSONException, ParseException {
+            throws JSONException {
 
         final String REVIEW_LIST = "results";
         final String AUTHOR = "author";
