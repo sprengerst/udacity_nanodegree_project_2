@@ -75,7 +75,7 @@ public class MainDiscoveryFragment extends Fragment implements LoaderManager.Loa
 
         this.movieGridAdapter = new MovieGridAdapter(getActivity(), null, 0);
 
-        View rootView = inflater.inflate(R.layout.fragment_discovery_main, container, false);
+        View rootView = inflater.inflate(R.layout.movie_discovery_fragment, container, false);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie_images);
         gridView.setAdapter(this.movieGridAdapter);

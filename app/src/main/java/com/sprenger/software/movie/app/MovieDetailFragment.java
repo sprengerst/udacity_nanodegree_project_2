@@ -89,7 +89,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             System.out.println("DETAIL RECEIVED URI: " + mUri);
         }
 
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.movie_detail_fragment, container, false);
         mMoviePosterView = (ImageView) rootView.findViewById(R.id.image_view_detail);
         mMovieSynopsisView = (TextView) rootView.findViewById(R.id.synopsis_text_detail);
         mMovieTitleView = (TextView) rootView.findViewById(R.id.title_text_detail);

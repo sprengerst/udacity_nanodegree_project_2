@@ -29,7 +29,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements MainDisc
         mSortOrder = Utility.getPreferedSortOrder(this);
         mOnlyFavorites = Utility.getOnlyFavoriteOption(this);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.movie_discovery_activity);
 
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;

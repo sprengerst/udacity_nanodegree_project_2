@@ -13,7 +13,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.movie_detail_activity);
         if (savedInstanceState == null) {
 
             Bundle arguments = new Bundle();

@@ -3,10 +3,6 @@
   ~ Created by Stefan Sprenger
   -->
 
-<!--
-  ~ Created by Stefan Sprenger
-  -->
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
